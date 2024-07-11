@@ -5,7 +5,7 @@
     "dark": "/logo/lecker_dark.svg",
     "light": "/logo/lecker_light.svg"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -43,19 +43,19 @@
       "group": "Get Started",
       "pages": [
         "introduction",
-        "quickstart",
-        "development"
+        "quickstart"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Controllers",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "controllers/frontend",
+        "controllers/backend",
+        "controllers/content",
+        "controllers/user",
+        "controllers/authentication",
+        "controllers/openai",
+        "controllers/my_controller"
       ]
     },
     {
