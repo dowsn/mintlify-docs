@@ -1,0 +1,97 @@
+---
+title: 'Openai_Content Trait'
+description: 'Trait for managing OpenAI-related content in a content management system'
+---
+
+The `Openai_Content` trait provides functionality for managing various aspects of OpenAI integration within a content management system. It includes methods for handling chat logs, translations, language lines, inputs, languages, and prompts related to OpenAI interactions.
+
+## Main Methods
+
+### openai_chat_log()
+
+Manages the OpenAI chat logs.
+
+<ResponseField name="Key Features">
+  - Displays chat topics, checked status, and creation time
+  - Provides a link to view detailed chat logs
+</ResponseField>
+
+### openai_chats($id)
+
+Displays detailed chat logs for a specific chat session.
+
+<ResponseField name="Parameters">
+  <ResponseField name="id" type="integer">
+    The ID of the chat session
+  </ResponseField>
+</ResponseField>
+
+### openai_question_translations()
+
+Manages translations for OpenAI questions.
+
+<ResponseField name="Key Features">
+  - Links prompts to languages and their translations
+</ResponseField>
+
+### openai_langlines()
+
+Manages language lines for OpenAI interactions.
+
+<ResponseField name="Key Features">
+  - Stores key-value pairs for different languages
+</ResponseField>
+
+### openai_inputs()
+
+Manages input data for OpenAI prompts.
+
+<ResponseField name="Key Features">
+  - Stores topics and associated input text
+</ResponseField>
+
+### openai_languages()
+
+Manages the list of languages supported in the OpenAI system.
+
+### openai_prompts()
+
+Manages OpenAI prompts.
+
+<ResponseField name="Key Features">
+  - Stores areas, topics, questions, user prompts, and system prompts
+  - Tracks whether prompts are translated
+</ResponseField>
+
+## Common Features
+
+- All methods use a custom CRUD library (`besc_crud`) for database operations
+- Access is restricted to admin users
+- Each method sets up specific columns for listing and filtering data
+- Custom buttons are added where necessary (e.g., to link to detailed chat logs)
+
+## Usage Notes
+
+- This trait is designed to be used within a class that has access to CodeIgniter's features and a custom CRUD library (`besc_crud`).
+- It assumes the existence of an OpenAI model (`$this->om`) with methods like `getOpenaiPrompts()`, `getOpenaiLanguages()`, etc.
+- The trait uses authentication checks to ensure only admin users can access these settings.
+
+<Note>
+The trait interacts with several database tables related to OpenAI functionality. Ensure your database schema includes these tables: `openai_chat_log`, `openai_chats`, `openai_question_translations`, `openai_langlines`, `openai_inputs`, `openai_languages`, and `openai_prompts`.
+</Note>
+
+<Warning>
+- Direct database operations are used in some methods. Implement proper input validation and error handling in production environments.
+- The trait assumes specific database structures. Ensure your database schema matches these assumptions.
+- Some fields use CKEditor for rich text input. Ensure proper sanitization of this input to prevent XSS vulnerabilities.
+</Warning>
+
+## Customization
+
+To use this trait effectively:
+1. Include it in your content management class.
+2. Ensure all required properties, methods, and libraries are available in the using class or its parent classes.
+3. Set up the necessary database tables and schemas.
+4. Implement the OpenAI model (`$this->om`) with the required methods.
+5. Customize the CRUD configurations (columns, filters, etc.) if needed to match your specific requirements.
+6. Implement proper security measures, especially for admin-only accessible methods.

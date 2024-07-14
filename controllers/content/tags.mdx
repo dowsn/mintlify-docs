@@ -1,0 +1,72 @@
+---
+title: 'Tags_Content Trait'
+description: 'Trait for managing general and specific tags in a content management system'
+---
+
+The `Tags_Content` trait provides functionality for managing both general tags applicable across different content types and specific tags for particular content entities.
+
+## Main Methods
+
+### tags()
+
+Manages general tags that can be applied across multiple content types.
+
+<ResponseField name="Key Features">
+  - CRUD operations for general tags
+  - Dynamically generates relations for all article types defined in ARTICLE_TYPES
+  - Supports multilingual tag names (default and English)
+</ResponseField>
+
+### normal_tags()
+
+Manages specific tags for a particular content type (in this case, "normal" content).
+
+<ResponseField name="Key Features">
+  - CRUD operations for specific tags
+  - Relation management between tags and the specific content type
+  - Supports multilingual tag names (default and English)
+</ResponseField>
+
+## Common Features
+
+- Both methods use a custom CRUD library (`besc_crud`) for database operations
+- Access is restricted to admin users
+- Each method sets up specific columns for listing and filtering data
+
+## Usage Notes
+
+- This trait is designed to be used within a class that has access to CodeIgniter's features and a custom CRUD library (`besc_crud`).
+- It assumes the existence of an `ARTICLE_TYPES` constant or configuration that defines different content types in the system.
+- The trait uses authentication checks to ensure only admin users can access these settings.
+
+<Note>
+The `tags()` method dynamically generates relations for all article types defined in `ARTICLE_TYPES`. Ensure this constant or configuration is properly set up in your application.
+</Note>
+
+<Warning>
+- Direct database operations are used in some methods. Implement proper input validation and error handling in production environments.
+- The trait assumes specific database structures for tags and their relations. Ensure your database schema matches these assumptions.
+- The `normal_tags()` method uses the function name to determine the specific tag type. Be cautious when renaming this method or create similar methods for other specific tag types.
+</Warning>
+
+## Customization
+
+To use this trait effectively:
+1. Include it in your content management class.
+2. Ensure all required properties, methods, and libraries are available in the using class or its parent classes.
+3. Set up the necessary database tables and schemas for general tags and specific tag types.
+4. Define your `ARTICLE_TYPES` constant or configuration to match your content structure.
+5. Create additional methods similar to `normal_tags()` for other specific tag types you need to manage.
+6. Implement proper security measures, especially for admin-only accessible methods.
+
+## Key Components
+
+### General Tags
+- Supports multiple content type relations
+- Dynamically generated based on `ARTICLE_TYPES`
+
+### Specific Tags (e.g., normal_tags)
+- Tailored to a particular content type
+- Manages relations between tags and content items
+
+Both components use CRUD operations to allow easy management through an admin interface.

@@ -1,0 +1,110 @@
+---
+title: 'Shop_Content Trait'
+description: 'Trait for managing e-commerce related content in a content management system'
+---
+
+The `Shop_Content` trait provides functionality for managing various aspects of an e-commerce system within a content management system. It includes methods for handling products, orders, customers, and other shop-related entities.
+
+## Main Methods
+
+### products()
+
+Manages product information.
+
+<ResponseField name="Key Features">
+  - CRUD operations for products
+  - Handles product details, categories, tags, and versions
+  - Manages product availability and pricing
+</ResponseField>
+
+### product_categories()
+
+Manages product categories.
+
+### product_tags()
+
+Manages product tags.
+
+### product_versions()
+
+Manages different versions of products (e.g., colors, sizes).
+
+### orders()
+
+Manages order information.
+
+<ResponseField name="Key Features">
+  - Comprehensive order details including customer info, shipping, and payment status
+  - Handles different order statuses
+</ResponseField>
+
+### ordered_products()
+
+Manages products within orders.
+
+### order_notes()
+
+Manages notes associated with orders.
+
+### taxes()
+
+Manages tax rates for products.
+
+### vouchers()
+
+Manages discount vouchers and promo codes.
+
+<ResponseField name="Key Features">
+  - Supports various voucher types (percentage, flat rate, product-specific)
+  - Handles validity periods for vouchers
+</ResponseField>
+
+### customers()
+
+Manages customer information.
+
+### favorites()
+
+Manages customer's favorite products.
+
+## Common Features
+
+- All methods use a custom CRUD library (`besc_crud`) for database operations
+- Access is restricted to admin users
+- Each method sets up specific columns for listing and filtering data
+
+## Usage Notes
+
+- This trait is designed to be used within a class that has access to CodeIgniter's features and a custom CRUD library (`besc_crud`).
+- It assumes the existence of a content model (`$this->cm`) with methods like `getAllProducts()`, `getCustomers()`, etc.
+- The trait uses authentication checks to ensure only admin users can access these settings.
+
+<Note>
+The trait interacts with several database tables related to e-commerce functionality. Ensure your database schema includes these tables (prefixed with 's_' for shop-related tables).
+</Note>
+
+<Warning>
+- Direct database operations are used in some methods. Implement proper input validation and error handling in production environments.
+- The trait assumes specific database structures. Ensure your database schema matches these assumptions.
+- Some fields use CKEditor for rich text input. Ensure proper sanitization of this input to prevent XSS vulnerabilities.
+</Warning>
+
+## Customization
+
+To use this trait effectively:
+1. Include it in your content management class.
+2. Ensure all required properties, methods, and libraries are available in the using class or its parent classes.
+3. Set up the necessary database tables and schemas.
+4. Implement the content model (`$this->cm`) with the required methods.
+5. Customize the CRUD configurations (columns, filters, etc.) if needed to match your specific e-commerce requirements.
+6. Implement proper security measures, especially for admin-only accessible methods.
+
+## Key Components
+
+- Product Management (including categories, tags, and versions)
+- Order Management
+- Customer Management
+- Tax and Voucher Systems
+- Favorites System
+
+Each component uses CRUD operations to allow easy management through an admin interface.s

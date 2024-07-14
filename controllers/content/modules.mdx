@@ -1,0 +1,93 @@
+---
+title: 'Modules_Content Trait'
+description: 'Trait for managing modular content in a content management system'
+---
+
+The `Modules_Content` trait provides functionality for managing modular content within articles or pages. It handles operations such as cloning, editing, and saving various types of content modules.
+
+## Key Properties
+
+<ResponseField name="moduleNames" type="array">
+  An array of module types supported by the system (e.g., 'text', 'image', 'gallery').
+</ResponseField>
+
+<ResponseField name="*DataKeys" type="array">
+  Multiple arrays (one for each module type) defining the data fields for each module type.
+</ResponseField>
+
+<ResponseField name="*RelatedItemsKeys" type="array">
+  Arrays defining related item fields for certain module types (if applicable).
+</ResponseField>
+
+## Main Methods
+
+### module_editor($itemId, $parent = PARENT_ARTICLE)
+
+Prepares data for the module editor interface.
+
+### clone_universal($entityId, $type = 'noarticle', $noarticle_type = false, $hasTeasers = 1, $name = 'name')
+
+Clones an entity and its associated content, including articles and teaser images.
+
+### clone_item($itemId)
+
+Clones a specific item and its associated modules.
+
+### clone_item_from_entity($itemId, $article_related = false, $newEntityId = false, $type_name = false, $newOriginalItemId = false)
+
+Clones an item from an entity, with options for handling related articles and language versions.
+
+### save_item()
+
+Saves all modules associated with an item.
+
+## Utility Methods
+
+### camelCaseMe($item)
+
+Converts a string to camelCase.
+
+### collectModuleIds($type, $itemId, $parent)
+
+Collects all module IDs of a specific type for an item.
+
+### addUpdateModule($type, $moduleIds, $data_keys, $module, $related_items = '', $relatedItemsDataKeys = array())
+
+Adds or updates a module and its related items.
+
+### deleteModuleByType($originalIds, $editedIds, $type, $related_items = false)
+
+Deletes modules that are no longer present in the edited set.
+
+### saveSpecificModuleForItem($module, $parent, $type, $originalIds, $dataKeys, $relatedItemsDataKeys = array(), $relatedItems = '')
+
+Saves a specific module for an item.
+
+### checkErrorsAndGetRelated($moduleType)
+
+Checks for errors and retrieves related item keys for a module type.
+
+## Usage Notes
+
+- This trait is designed to be used within a class that has access to CodeIgniter's features and custom model methods.
+- It assumes the existence of several model methods (e.g., `$this->cm->getItemById()`, `$this->cm->insertModuleByType()`).
+- The trait uses constants (e.g., `PARENT_ARTICLE`, `SECOND_LANGUAGE`) which should be defined elsewhere in the application.
+
+<Note>
+The trait uses several properties and methods that should be defined in the class using this trait, such as `$this->user`, `$this->language`, etc.
+</Note>
+
+<Warning>
+- Direct database operations are used in some methods. Implement proper input validation and error handling in production environments.
+- The module system is complex and relies on specific database structures. Ensure your database schema matches the assumptions made in this trait.
+- Cloning operations may have far-reaching effects. Test thoroughly and use with caution.
+</Warning>
+
+## Customization
+
+To use this trait effectively:
+1. Include it in your content management class.
+2. Ensure all required properties, methods, and constants are available in the using class or its parent classes.
+3. Define the necessary module types and their data keys in the class properties.
+4. Implement proper error handling and input validation, especially for module saving operations.
+5. Customize the module editor and saving logic to match your specific content structure and requirements.

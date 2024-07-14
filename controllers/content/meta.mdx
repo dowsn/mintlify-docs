@@ -1,0 +1,95 @@
+---
+title: 'Meta_Content Trait'
+description: 'Trait for managing meta content and settings in a content management system'
+---
+
+The `Meta_Content` trait provides functionality for managing various meta content and settings, including menus, landing page settings, languages, and colors.
+
+## Main Methods
+
+### main_menu()
+
+Manages the main menu items of the website.
+
+<ResponseField name="Key Features">
+  - CRUD operations for main menu items
+  - Includes visibility settings and ordering
+  - Links to sub-menu management
+</ResponseField>
+
+### sub_menu($id)
+
+Manages sub-menu items linked to a main menu item.
+
+<ResponseField name="Parameters">
+  <ResponseField name="id" type="integer">
+    The ID of the parent main menu item
+  </ResponseField>
+</ResponseField>
+
+<ResponseField name="Key Features">
+  - CRUD operations for sub-menu items
+  - Includes visibility settings and ordering
+</ResponseField>
+
+### lp_settings()
+
+Manages landing page settings.
+
+<ResponseField name="Key Features">
+  - Controls intro text, top video, and marquee settings
+  - Handles file uploads for marquee images
+</ResponseField>
+
+### languages()
+
+Manages language settings for the website.
+
+<ResponseField name="Key Features">
+  - CRUD operations for language entries
+  - Includes fields for name, short name, and ISO code
+</ResponseField>
+
+### colors()
+
+Manages color settings used throughout the website.
+
+<ResponseField name="Key Features">
+  - CRUD operations for color entries
+  - Includes a color picker for selecting hex values
+</ResponseField>
+
+## Usage Notes
+
+- This trait is designed to be used within a class that has access to CodeIgniter's features and a custom CRUD library (`besc_crud`).
+- It assumes the existence of several model methods (e.g., `$this->cm->get_items_categories()`, `$this->cm->get_items()`).
+- The trait uses authentication checks to ensure only admin users can access these settings.
+
+<Note>
+The trait uses several properties and methods that should be defined in the class using this trait, such as `$this->user`, `$this->groupName`, `$this->setTableName()`, etc.
+</Note>
+
+<Warning>
+- Direct database operations are used in some methods. Implement proper input validation and error handling in production environments.
+- File upload functionality is included for marquee images. Ensure proper security measures are in place for file uploads.
+- The trait assumes specific database structures for menus, languages, and colors. Ensure your database schema matches these assumptions.
+</Warning>
+
+## Customization
+
+To use this trait effectively:
+1. Include it in your content management class.
+2. Ensure all required properties, methods, and libraries are available in the using class or its parent classes.
+3. Adjust the CRUD configurations (columns, filters, etc.) to match your specific requirements for each content type.
+4. Implement proper security measures, especially for file uploads and admin-only accessible methods.
+5. Customize the language and color management to fit your application's internationalization and theming needs.
+
+## Key Components
+
+- Main Menu Management
+- Sub-Menu Management
+- Landing Page Settings
+- Language Settings
+- Color Management
+
+Each component uses CRUD operations to allow easy management of the respective settings through an admin interface.

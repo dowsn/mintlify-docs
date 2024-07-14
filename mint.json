@@ -41,36 +41,72 @@
   "navigation": [
     {
       "group": "Get Started",
+      "pages": ["introduction", "quickstart"]
+    },
+    {
+      "group": "Backend Controller",
+      "pages": ["controllers/backend/main", "controllers/backend/helper"]
+    },
+    {
+      "group": "Content Controller",
       "pages": [
-        "introduction",
-        "quickstart"
+        "controllers/content/main",
+        "controllers/content/article_entity",
+        "controllers/content/file",
+        "controllers/content/helper",
+        "controllers/content/image",
+        "controllers/content/item_dev",
+        "controllers/content/lecker",
+        "controllers/content/meta",
+        "controllers/content/modules",
+        "controllers/content/noarticle_entity",
+        "controllers/content/openai",
+        "controllers/content/shop",
+        "controllers/content/tags"
       ]
     },
     {
-      "group": "Controllers",
+      "group": "Frontend Controller",
       "pages": [
-        "controllers/frontend",
-        "controllers/backend",
-        "controllers/content",
-        "controllers/user",
-        "controllers/authentication",
-        "controllers/openai",
-        "controllers/my_controller"
+        "controllers/frontend/data",
+        "controllers/frontend/detail_load",
+        "controllers/frontend/format",
+        "controllers/frontend/forms",
+        "controllers/frontend/helper",
+        "controllers/frontend/language",
+        "controllers/frontend/modules",
+        "controllers/frontend/pages",
+        "controllers/frontend/user"
       ]
     },
     {
-      "group": "API Documentation",
+      "group": "MY Controller",
       "pages": [
-        "api-reference/introduction"
+        "controllers/my_controller/data",
+        "controllers/my_controller/debug",
+        "controllers/my_controller/lingual",
+        "controllers/my_controller/modules"
       ]
     },
     {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
-      ]
+      "group": "Lecker Controller",
+      "pages": ["controllers/lecker/main"]
+    },
+    {
+      "group": "Shop Controller",
+      "pages": ["controllers/shop/main"]
+    },
+    {
+      "group": "Openai Controller",
+      "pages": ["controllers/openai/main"]
+    },
+    {
+      "group": "Authentication Controller",
+      "pages": ["controllers/authentication/main"]
+    },
+    {
+      "group": "User Controller",
+      "pages": ["controllers/user/main"]
     }
   ],
   "footerSocials": {

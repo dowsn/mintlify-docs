@@ -1,0 +1,115 @@
+---
+title: 'Main'
+---
+
+The `Content` class extends the `Backend` class and incorporates various traits for different types of content management. It serves as the central controller for handling articles, entities, shop items, images, files, tags, and more.
+
+## Class Properties
+
+<ResponseField name="table" type="string" default="items">
+  The main database table used by this controller.
+</ResponseField>
+
+<ResponseField name="tableSingular" type="string" default="item">
+  The singular form of the table name.
+</ResponseField>
+
+<ResponseField name="typeOfTable" type="string">
+  The type of the table. Used for specific table operations.
+</ResponseField>
+
+<ResponseField name="groupName" type="string" default="Articles">
+  The group name for the content items.
+</ResponseField>
+
+<ResponseField name="tablePrettyName" type="string" default="Articles">
+  A user-friendly name for the table, used in UI.
+</ResponseField>
+
+<ResponseField name="tablePrettyNameSingular" type="string" default="Article">
+  A user-friendly singular name for the table items, used in UI.
+</ResponseField>
+
+<ResponseField name="customButtons" type="array">
+  An array to store custom buttons for the UI.
+</ResponseField>
+
+<ResponseField name="repoFilterKeys" type="array">
+  Keys used for filtering repository items.
+</ResponseField>
+
+<ResponseField name="ArticleOrNoarticleOrNoneType" type="constant" default="ARTICLE">
+  Determines the type of content (Article, No Article, or None).
+</ResponseField>
+
+<ResponseField name="entityTypeId" type="int" default="0">
+  The ID of the entity type.
+</ResponseField>
+
+<ResponseField name="pagination" type="int" default="10">
+  The number of items per page for pagination.
+</ResponseField>
+
+<ResponseField name="columns" type="array">
+  Columns to be used in database queries or UI display.
+</ResponseField>
+
+<ResponseField name="filterColumns" type="array">
+  Columns that can be used for filtering data.
+</ResponseField>
+
+<ResponseField name="listColumns" type="array">
+  Columns to be displayed in list views.
+</ResponseField>
+
+<ResponseField name="repoEntityType" type="boolean|string" default="false">
+  The type of entity in the repository, if applicable.
+</ResponseField>
+
+<ResponseField name="repoEntityId" type="boolean|int" default="false">
+  The ID of the entity in the repository, if applicable.
+</ResponseField>
+
+<ResponseField name="repoHasArticle" type="boolean" default="true">
+  Indicates whether the repository items have associated articles.
+</ResponseField>
+
+## Constructor
+
+The constructor calls the parent constructor and solves pagination (likely setting up pagination parameters).
+
+## Included Traits
+
+The class uses several traits to incorporate different functionalities:
+
+- `Item_Dev_Content`
+- `Tags_Content`
+- `Article_Entity_Content`
+- `Noarticle_Entity_Content`
+- `Openai_Content`
+- `Shop_Content`
+- `Modules_Content`
+- `File_Content`
+- `Image_Content`
+- `Meta_Content`
+- `Lecker_Content`
+- `Helper_Content`
+
+Each of these traits likely provides specific methods for handling different types of content or functionalities.
+
+## Usage Notes
+
+- This class serves as a central hub for content management, incorporating various content types and functionalities through traits.
+- The class is designed to work with a database, likely using CodeIgniter's database functions.
+- It includes properties for pagination, filtering, and custom UI elements, suggesting a comprehensive content management system.
+- The use of traits allows for modular organization of different content management functionalities.
+
+<Note>
+The specific functionalities provided by each trait are not visible in this code snippet. To fully understand the capabilities of this class, you would need to examine each of the included trait files.
+</Note>
+
+<Warning>
+- The class uses a constant `ARTICLE` which should be defined elsewhere in the application.
+- Some properties are initialized with default values that might need to be adjusted based on specific application requirements.
+- The `solvePagination()` method called in the constructor is not defined in this snippet and its functionality is unclear without further context.
+</Warning>

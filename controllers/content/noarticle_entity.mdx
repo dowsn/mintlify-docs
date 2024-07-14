@@ -1,0 +1,75 @@
+---
+title: 'Noarticle_Entity_Content Trait'
+description: 'Trait for managing entities without associated articles in a content management system'
+---
+
+The `Noarticle_Entity_Content` trait provides functionality for managing entities that don't have associated articles, such as artworks and searches.
+
+## Main Methods
+
+### artworks()
+
+Manages the artworks entity.
+
+<ResponseField name="Key Features">
+  - Sets up CRUD operations for artworks
+  - Defines list and filter columns
+  - Configures input fields for artworks
+</ResponseField>
+
+### searches()
+
+Manages the searches entity.
+
+<ResponseField name="Key Features">
+  - Sets up CRUD operations for searches
+  - Defines list and filter columns including 'name', 'name_en', 'amount', and 'selector'
+  - Configures input fields for searches, including a selector option
+</ResponseField>
+
+## Common Properties
+
+<ResponseField name="groupName" type="string" default="Tables">
+  Defines the group name for these entities in the CMS.
+</ResponseField>
+
+<ResponseField name="typeOfTable" type="string" default="">
+  Specifies the type of table (left empty in this trait).
+</ResponseField>
+
+## Usage Notes
+
+- This trait is designed to be used within a class that has access to CodeIgniter's features and a custom CRUD library (`besc_crud`).
+- It assumes the existence of several methods like `setTableName()`, `prepareTable()`, etc.
+- The trait uses a pagination system, which should be set up in the parent class.
+
+<Note>
+The trait contains a commented-out method `normals()` which seems to be a template for creating new entity types. This method could be uncommented and customized for new entity types if needed.
+</Note>
+
+<Warning>
+- The trait assumes specific database structures for artworks and searches. Ensure your database schema matches these assumptions.
+- The commented-out `normals()` method contains complex logic for handling entities with articles. If uncommenting and using this method, thoroughly review and test its functionality.
+</Warning>
+
+## Customization
+
+To use this trait effectively:
+1. Include it in your content management class.
+2. Ensure all required properties, methods, and libraries are available in the using class or its parent classes.
+3. Adjust the CRUD configurations (columns, filters, etc.) to match your specific requirements for each entity type.
+4. If creating new entity types, consider using the commented `normals()` method as a template, customizing it as needed.
+5. Implement proper error handling and input validation, especially for database operations.
+
+## Key Components
+
+### For Artworks
+- Simple name field
+
+### For Searches
+- Name field (in default language)
+- Name field in English
+- Amount field
+- Selector field (Yes/No option)
+
+Each entity type uses CRUD operations to allow easy management through an admin interface.

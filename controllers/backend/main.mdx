@@ -1,0 +1,448 @@
+---
+title: 'Main'
+---
+
+## Overview
+
+The `Backend` class extends `MY_Controller` and handles various backend operations for a web application. It includes functions for user authentication, file management, widget handling, and data export.
+
+## Class Properties
+
+<ResponseField name="user" type="object">
+  Stores user data retrieved from the authentication model.
+</ResponseField>
+
+<ResponseField name="base_url" type="string">
+  Stores the base URL of the application.
+</ResponseField>
+
+<ResponseField name="module_tables" type="array">
+  Stores an array of module tables.
+</ResponseField>
+
+## Constructor
+
+The constructor performs the following actions:
+- Checks if the user is logged in
+- Loads necessary libraries (zip, form_validation, fpdf, FPDI, PHPExcel)
+- Initializes the user data
+
+## Main Methods
+
+### index()
+
+Displays the main backend dashboard.
+
+<ResponseField name="Returns">
+  Renders the backend home page with widget data.
+</ResponseField>
+
+### editSelected()
+
+Handles editing of selected items based on their type.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with item details.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success or failure.
+</ResponseField>
+
+### updatRepo()
+
+Updates repository information for teaser images.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with repository details.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success.
+</ResponseField>
+
+### zip()
+
+Creates a zip file from selected images.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with image sources.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response with the path to the created zip file.
+</ResponseField>
+
+### removeAny()
+
+Removes an item from the database.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with item details.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success or failure.
+</ResponseField>
+
+### files_relation($item_type, $item_id)
+
+Manages file relations for different item types.
+
+<ResponseField name="item_type" type="string">
+  The type of item (e.g., 'artefakte', 'ereignis', 'person').
+</ResponseField>
+
+<ResponseField name="item_id" type="string">
+  The ID of the item.
+</ResponseField>
+
+<ResponseField name="Returns">
+  Renders the file relation page or displays an error.
+</ResponseField>
+
+### widget_data()
+
+Retrieves and prepares widget data for the dashboard.
+
+<ResponseField name="Returns" type="array">
+  An array containing widget data, including custom, default, and shop widgets.
+</ResponseField>
+
+### export()
+
+Exports selected items to a CSV file.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with export details.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response with the path to the exported file or an error message.
+</ResponseField>
+
+## Helper Methods
+
+### upload_image()
+
+Handles image upload.
+
+<ResponseField name="Returns">
+  JSON response with upload details.
+</ResponseField>
+
+### upload_file()
+
+Handles file upload.
+
+<ResponseField name="Returns">
+  JSON response with upload details.
+</ResponseField>
+
+### checkLoggedin()
+
+Checks if the user is logged in.
+
+<ResponseField name="Returns">
+  JSON response indicating login status.
+</ResponseField>
+
+## Additional Methods
+
+### add_delete_file_relation()
+
+Manages the addition or deletion of file relations for different entity types.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with item details, file details, and relation status.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success or failure of the operation.
+</ResponseField>
+
+### get_update_file_order()
+
+Updates the order of files associated with an entity.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with item details and new file order.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response with updated file information or error details.
+</ResponseField>
+
+### add_widget()
+
+Adds a new widget to the user's dashboard.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with widget details (category, table, icon, color, note).
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success.
+</ResponseField>
+
+### remove_widget()
+
+Removes a widget from the user's dashboard.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with widget ID.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success.
+</ResponseField>
+
+### refresh_widgets()
+
+Refreshes the widget data for the user's dashboard.
+
+<ResponseField name="Returns">
+  JSON response with updated HTML for widgets.
+</ResponseField>
+
+### add_quicklink()
+
+Adds a new quicklink for the user.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with quicklink details (category, table, note).
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success.
+</ResponseField>
+
+### remove_quicklink()
+
+Removes a quicklink for the user.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with quicklink ID.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success.
+</ResponseField>
+
+### deleteParticipant()
+
+Deletes a participant from the system.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with participant ID.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success or failure of the deletion.
+</ResponseField>
+
+### editParticipant()
+
+Edits details of a participant.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with updated participant details.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success or failure of the edit operation.
+</ResponseField>
+
+### updateSorting()
+
+Updates the sorting order of items.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with an array of items and their new order.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success.
+</ResponseField>
+
+### updateStartOrder()
+
+Updates the starting order of items.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with an array of items and their new starting order.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success.
+</ResponseField>
+
+### page($content_view, $content_data = array())
+
+Renders a complete page with the specified content view and data.
+
+<ResponseField name="content_view" type="string">
+  The name of the view file to be rendered as the main content.
+</ResponseField>
+
+<ResponseField name="content_data" type="array">
+  Optional. An array of data to be passed to the content view.
+</ResponseField>
+
+This method handles the overall page structure, including:
+- Loading user data
+- Setting up CSS and JS files
+- Loading menu points
+- Setting up custom menus
+- Rendering the header, menu, content, and footer views
+
+### save_images()
+
+Saves image information for an artwork item.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with item ID and image details.
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response indicating success.
+</ResponseField>
+
+## Custom Menu Handling
+
+The `page()` method includes logic for setting up custom menus. Here's a detailed breakdown of this process:
+
+### Custom Menu Generation
+
+The controller retrieves and structures custom menu data using the following process:
+
+1. Retrieves Lecker areas using `$this->bm->getLeckerAreas()`.
+2. For each area, it retrieves associated menus using `$this->bm->getLeckerMenus($area_id)`.
+3. For each menu, it retrieves submenus using `$this->bm->getLeckerSubmenus($menu_id)`.
+4. The resulting structure is stored in `$data['custom_menus']` for use in the view.
+
+<CodeGroup>
+```php Custom Menu Structure
+$lecker_menu_array = [
+  {
+    // Area properties
+    menus: [
+      {
+        // Menu properties
+        submenus: [
+          {
+            // Submenu properties
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+</CodeGroup>
+
+<Note>
+The custom menu generation relies on the existence of `lecker_areas`, `lecker_menus`, and `lecker_submenus` tables in the database.
+</Note>
+
+## File Upload Handling
+
+The controller includes two methods for handling file uploads:
+
+### upload_image()
+
+Handles image file uploads.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with:
+  - filename: The original name of the file
+  - uploadpath: The server path where the file should be uploaded
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response with:
+  - success: Boolean indicating if the upload was successful
+  - path: The server path where the file was saved
+  - filename: The new filename of the uploaded file
+</ResponseField>
+
+### upload_file()
+
+Handles general file uploads.
+
+<ResponseField name="Parameters" type="object">
+  Expects POST data with:
+  - filename: The original name of the file
+  - uploadpath: The server path where the file should be uploaded
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response with:
+  - success: Boolean indicating if the upload was successful
+  - path: The server path where the file was saved
+  - filename: The filename of the uploaded file
+</ResponseField>
+
+<Note>
+Both upload methods use the `move_uploaded_file()` PHP function to handle the actual file transfer.
+</Note>
+
+## Authentication Handling
+
+The controller includes a method for checking user authentication status:
+
+### checkLoggedin()
+
+Checks if the user is currently logged in.
+
+<ResponseField name="Returns">
+  JSON response with:
+  - success: Boolean indicating if the user is logged in
+</ResponseField>
+
+This method can be used for AJAX requests to verify user authentication status without reloading the page.
+
+## Error Handling and Validation
+
+Throughout the controller, there are several instances of error checking and validation:
+
+1. Database table existence checks using `$this->tableExists()`.
+2. Method existence checks using `$this->methodExists()`.
+3. POST data validation using `$this->postPropertiesExist()`.
+
+These checks help ensure that the necessary database structures and methods are in place before operations are performed, reducing the risk of runtime errors.
+
+## Constants and Configuration
+
+The controller references several constants that are likely defined in a configuration file:
+
+- `BASEPATH`
+- `DB_NAME`
+- `NUMBER_OF_LANGUAGES`
+- `MAIN_LANGUAGE`
+- `IS_SHOP`
+- `ITEMS_COLOR`
+- `IMAGES_COLOR`
+- `FILES_COLOR`
+
+These constants appear to control various aspects of the application's behavior and appearance.
+
+## Integration with External Libraries
+
+The constructor loads several external libraries:
+
+- FPDF
+- FPDI
+- PHPExcel
+
+These libraries are likely used for PDF generation and Excel file manipulation, although the specific usage is not visible in the provided code snippet.
+
+<Warning>
+The use of external libraries may introduce dependencies and potential security risks. Ensure that these libraries are kept up-to-date and that their usage complies with your application's security requirements.
+</Warning>
+
+## Conclusion
+
+The Backend controller serves as a central hub for various administrative and backend operations in the application. It handles user authentication, file management, custom menu generation, and various entity-specific operations. The controller makes extensive use of model methods for database operations and includes several utility methods for common tasks.
+
+For a complete understanding of the system, it's crucial to review the associated models, views, and configuration files that interact with this controller.

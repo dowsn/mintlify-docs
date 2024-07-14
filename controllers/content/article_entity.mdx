@@ -1,0 +1,94 @@
+---
+title: 'Article_Entity_Content Trait'
+description: 'Trait for handling entities with associated articles in a content management system'
+---
+
+The `Article_Entity_Content` trait provides functionality for managing entities that have associated articles. It defines a structure for displaying, filtering, and managing these entities.
+
+## Main Method
+
+### normals()
+
+This method sets up the configuration for managing normal entities with associated articles.
+
+Key actions:
+1. Sets up group name and table type
+2. Defines list and filter columns
+3. Prepares select data for flags and colors
+4. Defines input fields (columns) for the entity
+
+## Configuration Properties
+
+<ResponseField name="groupName" type="string" default="Articles">
+  Defines the group name for these entities.
+</ResponseField>
+
+<ResponseField name="typeOfTable" type="constant" default="TABLE_ENTITY_WITH_ARTICLE">
+  Specifies the type of table. Options include:
+  - TABLE_ENTITY_WITH_ARTICLE
+  - TABLE_NOARTICLE_WITH_ALL_BUTTONS
+  - TABLE_NOARTICLE_JUST_CLONE
+</ResponseField>
+
+## Columns and Filters
+
+### listColumns
+
+An array defining the columns to be displayed in the list view. Includes:
+- name
+- entities_tags_relation
+- [table]_tags_relation
+- id
+- date_added
+
+### filterColumns
+
+An array defining the columns that can be used for filtering. Similar to listColumns but may include additional fields like 'description'.
+
+## Input Fields
+
+The method defines a set of input fields (columns) for the entity. Key fields include:
+
+<ResponseField name="id" type="hidden">
+  The unique identifier for the entity.
+</ResponseField>
+
+<ResponseField name="date_added" type="hidden">
+  The date the entity was added, automatically set to the current date and time.
+</ResponseField>
+
+<ResponseField name="name" type="text">
+  The internal name of the entity.
+</ResponseField>
+
+<ResponseField name="entities_tags_relation" type="m_n_relation">
+  Manages the many-to-many relationship between entities and tags.
+</ResponseField>
+
+<ResponseField name="[table]_tags_relation" type="m_n_relation">
+  Manages the many-to-many relationship between the specific entity type and its tags.
+</ResponseField>
+
+## Usage Notes
+
+- This trait is designed to be used within a class that has access to methods like `setTableName()`, `getSelector()`, `prepareTable()`, and properties like `bc` (likely a database crud object).
+- It assumes the existence of a tags system and related database tables.
+- The `normals()` method prepares the data and renders a view ('backend/crud/crud'), suggesting it's part of a larger CRUD system.
+
+<Note>
+The trait uses several properties (`entityTypeId`, `table`, `tableSingular`, `tablePrettyName`) that should be defined in the class using this trait.
+</Note>
+
+<Warning>
+- The trait uses constants (`TABLE_ENTITY_WITH_ARTICLE`, etc.) which should be defined elsewhere in the application.
+- The `prepareTable()` and `bc->execute()` methods are not defined in this trait and their functionality is crucial for the proper operation of the `normals()` method.
+- This trait seems to be part of a larger system and may depend on other components not visible in this snippet.
+</Warning>
+
+## Customization
+
+To use this trait for a specific entity type:
+1. Include the trait in your entity controller class.
+2. Set the appropriate values for `table`, `tableSingular`, `tablePrettyName`, and `entityTypeId`.
+3. Modify the `listColumns`, `filterColumns`, and `columns` arrays as needed for your specific entity type.
+4. Ensure all required methods and properties are available in the using class or its parent classes.

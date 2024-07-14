@@ -1,0 +1,153 @@
+---
+title: 'File_Content Trait'
+description: 'Trait for handling file and image content management in a PHP application'
+---
+
+The `File_Content` trait provides functionality for managing files, file tags, and handling file uploads in a content management system.
+
+## Main Methods
+
+### files()
+
+Sets up the configuration for managing files in the system.
+
+<ResponseField name="Key Actions">
+  - Sets group name to "Files"
+  - Defines list and filter columns
+  - Prepares select data for file tags and colors
+  - Defines input fields (columns) for file entities
+</ResponseField>
+
+### file_tags()
+
+Manages the tags associated with files.
+
+<ResponseField name="Key Actions">
+  - Sets group name to "Files"
+  - Defines list and filter columns for tags
+  - Sets up a simple structure for managing file tags
+</ResponseField>
+
+### uploadFile()
+
+Handles the upload of files (PDF, ZIP, VTT).
+
+<ResponseField name="Parameters" type="POST data">
+  - filename: Name of the file to be uploaded
+  - uploadpath: Path where the file should be uploaded
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response with upload status, file path, and filename
+</ResponseField>
+
+### upload_image()
+
+Handles the upload of image files.
+
+<ResponseField name="Parameters" type="POST data">
+  - filename: Name of the image file to be uploaded
+  - uploadpath: Path where the image should be uploaded
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response with upload status, file path, and filename
+</ResponseField>
+
+### upload_pdf()
+
+Handles the upload of PDF files (and some image formats).
+
+<ResponseField name="Parameters" type="POST data">
+  - filename: Name of the PDF file to be uploaded
+  - uploadpath: Path where the PDF should be uploaded
+</ResponseField>
+
+<ResponseField name="Returns">
+  JSON response with upload status, file path, and filename
+</ResponseField>
+
+## Configuration Properties
+
+<ResponseField name="groupName" type="string" default="Files">
+  Defines the group name for file-related entities.
+</ResponseField>
+
+<ResponseField name="typeOfTable" type="string" default="">
+  Specifies the type of table (left empty in this trait).
+</ResponseField>
+
+## Columns and Filters
+
+### listColumns (for files)
+
+- title_en
+- title
+- file_tag
+- ordering
+- file_download
+
+### filterColumns (for files)
+
+Same as listColumns, used for filtering in the UI.
+
+## Input Fields (for files)
+
+Key fields include:
+
+<ResponseField name="file_download" type="file">
+  The actual file to be uploaded and managed.
+</ResponseField>
+
+<ResponseField name="title_en" type="text">
+  English title of the file.
+</ResponseField>
+
+<ResponseField name="title" type="text">
+  German title of the file.
+</ResponseField>
+
+<ResponseField name="ordering" type="text">
+  Ordering of the file in lists.
+</ResponseField>
+
+<ResponseField name="description" type="ckeditor">
+  German description of the file.
+</ResponseField>
+
+<ResponseField name="description_en" type="ckeditor">
+  English description of the file.
+</ResponseField>
+
+<ResponseField name="image" type="image">
+  An image or logo associated with the file.
+</ResponseField>
+
+<ResponseField name="file_tag" type="select">
+  Tag associated with the file.
+</ResponseField>
+
+## Usage Notes
+
+- This trait is designed to be used within a class that has access to methods like `setTableName()`, `getSelector()`, `prepareTable()`, and properties like `bc` (likely a database crud object).
+- It assumes the existence of a file tag system and related database tables.
+- The trait includes methods for file upload handling, including specific methods for images and PDFs.
+- Image uploads include a resize function to limit dimensions to 1000x1000 pixels.
+
+<Note>
+The trait uses several properties and methods (`pagination`, `prepareTable()`, `bc->execute()`) that should be defined in the class using this trait.
+</Note>
+
+<Warning>
+- The file upload methods don't include extensive security checks. Ensure proper validation and sanitization are implemented when using these methods.
+- The trait uses helper functions (`rand_string()`, `resize_max()`) which are not defined within the trait and must be available in the application.
+- Hardcoded paths and URL structures are used in upload methods, which may need adjustment based on the specific application structure.
+</Warning>
+
+## Customization
+
+To use this trait for file management:
+1. Include the trait in your content management class.
+2. Ensure all required methods and properties are available in the using class or its parent classes.
+3. Adjust file paths and URL structures as needed for your specific application setup.
+4. Implement any additional security measures for file uploads as required by your application's security policy.

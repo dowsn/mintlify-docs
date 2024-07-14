@@ -1,0 +1,112 @@
+---
+title: 'Image_Content Trait'
+description: 'Trait for handling image repository and teaser image functionality in a PHP application'
+---
+
+The `Image_Content` trait provides methods for managing an image repository, handling teaser images, and processing image-related operations in a content management system.
+
+## Main Methods
+
+### repository_overview()
+
+Loads and displays the repository overview.
+
+### teaser_selector($type = false, $entityId = false, $has_article = true)
+
+Handles the selection of teaser images for entities.
+
+<ResponseField name="type" type="mixed">
+  The type of entity.
+</ResponseField>
+
+<ResponseField name="entityId" type="mixed">
+  The ID of the entity.
+</ResponseField>
+
+<ResponseField name="has_article" type="boolean">
+  Whether the entity has an associated article.
+</ResponseField>
+
+### repo_module($module_type = 'image', $item_id = false, $module_id = false)
+
+Manages images for specific modules.
+
+<ResponseField name="module_type" type="string">
+  The type of module, defaulting to 'image'.
+</ResponseField>
+
+<ResponseField name="item_id" type="mixed">
+  The ID of the item associated with the module.
+</ResponseField>
+
+<ResponseField name="module_id" type="mixed">
+  The ID of the module.
+</ResponseField>
+
+### loadRepoViewWithData($data = array())
+
+Loads the repository view with filtered data.
+
+### repoFilter($data, $number = null, $lastElem = null)
+
+Filters repository data based on various criteria.
+
+### deletePreviousModuleImages()
+
+Deletes previously associated module images.
+
+### updateModuleImages()
+
+Updates images associated with a module.
+
+### get_repo_image()
+
+Retrieves a specific repository image.
+
+### image_categories()
+
+Manages image categories.
+
+### crop_image()
+
+Handles image cropping operations.
+
+## Utility Methods
+
+### get_repo_data($data = array())
+
+Retrieves repository data including categories and images.
+
+## Key Features
+
+- Teaser image selection for entities
+- Module-specific image management
+- Image filtering based on various criteria (date, category, tags, etc.)
+- Image cropping functionality
+- Category management for images
+
+## Usage Notes
+
+- This trait is designed to be used within a class that has access to CodeIgniter's features (e.g., `$this->load`, `$this->page`).
+- It assumes the existence of several model methods (e.g., `$this->cm->getRepoCategories()`, `$this->cm->getRepositoryImages()`).
+- The trait uses a custom CRUD library (`besc_crud`) for managing image categories.
+- Image cropping uses the `image_moo` library.
+
+<Note>
+The trait uses several properties and methods that should be defined in the class using this trait, such as `$this->repoFilterKeys`, `$this->nullToString()`, etc.
+</Note>
+
+<Warning>
+- The image cropping function directly manipulates files on the server. Ensure proper file permissions and security measures are in place.
+- Some methods use direct database queries and file system operations. Implement proper input validation and error handling in production environments.
+- The trait assumes specific database structure and naming conventions. Ensure your database schema matches these assumptions.
+</Warning>
+
+## Customization
+
+To use this trait effectively:
+1. Include it in your content management class.
+2. Ensure all required properties, methods, and libraries are available in the using class or its parent classes.
+3. Configure the image upload paths and URL structures according to your application's setup.
+4. Implement proper error handling and input validation, especially for file operations and database queries.
+5. Adjust the filtering logic in `repoFilter()` if needed to match your specific requirements.

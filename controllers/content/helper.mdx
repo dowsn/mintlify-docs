@@ -1,0 +1,109 @@
+---
+title: 'Helper_Content Trait'
+description: 'Utility trait for content management in a PHP application'
+---
+
+The `Helper_Content` trait provides various utility functions for content management, including table preparation, authentication, custom button creation, Google Analytics integration, and CSV handling.
+
+## Main Methods
+
+### prepareTable()
+
+Prepares the table for display, including authentication, custom button creation, and CRUD setup.
+
+### authentication()
+
+Checks if the user is an admin and redirects if not.
+
+### createCustomButtons()
+
+Creates custom buttons based on the type of table being displayed.
+
+### solveTypes()
+
+Determines the entity type ID based on whether it's an article or non-article entity.
+
+### solvePagination()
+
+Sets the pagination value based on GET parameters or a default value.
+
+### createBC()
+
+Creates and configures the BESC CRUD object for table operations.
+
+### setTableName()
+
+Sets the table name based on the calling function and performs checks on the name.
+
+### getLangArray()
+
+Returns an array of language options based on the application's language configuration.
+
+## Google Analytics Methods
+
+### initializeAnalytics()
+
+Initializes the Google Analytics service object.
+
+### GA_Analytics_Cities()
+
+Retrieves analytics data for cities over the past year.
+
+### GA_Analytics_User_Data()
+
+Retrieves user analytics data for the past day.
+
+## CSV Handling Methods
+
+### csvToDb($tableName)
+
+Imports data from a CSV file into the specified database table.
+
+### dbTableToBlankCSV($tableName)
+
+Exports a blank CSV file with headers based on the specified table structure.
+
+### exportTableToCSV($tableName)
+
+Exports the entire contents of a database table to a CSV file.
+
+### makeCSV($filePath, $header, $rows)
+
+Creates a CSV file with the given headers and rows.
+
+### getMeTableColumns($tableName, $withId = false)
+
+Retrieves the column names and types for a given table.
+
+### createNewCSVFile($tableName)
+
+Creates a new CSV file with a random number appended to the name.
+
+### downloadCSVFile($filePath)
+
+Handles the download of a CSV file.
+
+## Usage Notes
+
+- This trait is designed to be used within a class that has access to CodeIgniter's database and other utility functions.
+- It assumes the existence of several constants (e.g., `TABLE_ENTITY_WITH_ARTICLE`, `ARTICLE_TYPES`, `NUMBER_OF_LANGUAGES`) which should be defined elsewhere in the application.
+- The Google Analytics methods require proper setup of Google Analytics credentials and the Google Analytics Data API.
+
+<Note>
+The trait uses several properties and methods that should be defined in the class using this trait, such as `$this->user`, `$this->bc`, and various model methods.
+</Note>
+
+<Warning>
+- The CSV import function (`csvToDb`) directly inserts data into the database without extensive validation. Ensure proper input sanitization is implemented when using this method.
+- The Google Analytics methods require the `google/analytics-data` package and proper configuration of credentials.
+- Some methods use direct file system operations which may require appropriate permissions in the production environment.
+</Warning>
+
+## Customization
+
+To use this trait effectively:
+1. Include it in your content management class.
+2. Ensure all required properties, methods, and constants are available in the using class or its parent classes.
+3. Configure Google Analytics credentials properly if using analytics features.
+4. Implement proper error handling and input validation, especially for CSV imports and file operations.
+5. Adjust file paths and URL structures as needed for your specific application setup.
