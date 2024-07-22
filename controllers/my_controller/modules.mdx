@@ -1,37 +1,135 @@
 ---
-title: 'Code Blocks'
-description: 'Display inline code and code blocks'
-icon: 'code'
+title: 'MY_Controller_Modules'
+description: 'Documentation for the module configuration array'
 ---
 
-## Basic
+## Module: Related
 
-### Inline Code
+This module defines the structure and properties for a "Related" module in the system.
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+### Configuration
 
+<CodeGroup>
+
+```php
+$modules[] = array(
+  'related' => (object) array(
+    'name' => 'Related',
+    'custom' => false,
+    'images' => 'multiple',
+    'columns' => array(
+      // Column definitions
+    )
+  )
+);
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
 
-### Code Block
+</CodeGroup>
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
+### Properties
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
+<ResponseField name="name" type="string">
+  The name of the module. In this case, it's set to "Related".
+</ResponseField>
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-````
+<ResponseField name="custom" type="boolean">
+  Indicates whether this is a custom module. It's set to `false`.
+</ResponseField>
+
+<ResponseField name="images" type="string">
+  Specifies the image handling capability. It's set to "multiple", indicating that multiple images can be associated with this module.
+</ResponseField>
+
+### Columns
+
+The module defines several columns with different properties:
+
+#### Text Column
+
+<ResponseField name="text" type="object">
+  <Expandable title="Properties">
+    <ResponseField name="type" type="string">
+      Set to "text", indicating a text input field.
+    </ResponseField>
+    <ResponseField name="label" type="string">
+      The label for this field, set to "Text".
+    </ResponseField>
+    <ResponseField name="instructions" type="string">
+      Instructions for the user: "Put your text".
+    </ResponseField>
+    <ResponseField name="required" type="boolean">
+      Indicates if this field is required. Set to `false`.
+    </ResponseField>
+    <ResponseField name="default" type="string">
+      The default value for this field. It's set to an empty string.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+#### Item Type Column
+
+<ResponseField name="item_type" type="object">
+  <Expandable title="Properties">
+    <ResponseField name="type" type="string">
+      Set to "select", indicating a dropdown selection field.
+    </ResponseField>
+    <ResponseField name="options" type="array">
+      An array of options for the select field:
+      - ARTICLE: 'articles'
+      - 2: 'Event'
+      - 3: 'Location'
+      - 4: 'Curator'
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+#### Related Items Column
+
+<ResponseField name="related_items" type="object">
+  <Expandable title="Properties">
+    <ResponseField name="type" type="string">
+      Set to "combo_box", indicating a combination of input and select field.
+    </ResponseField>
+    <ResponseField name="required" type="boolean">
+      Indicates if this field is required. Set to `false`.
+    </ResponseField>
+    <ResponseField name="label" type="string">
+      The label for this field, set to "Related items".
+    </ResponseField>
+    <ResponseField name="instructions" type="string">
+      Instructions for the user: "Choose related items".
+    </ResponseField>
+    <ResponseField name="controlled_by" type="string">
+      Indicates that this field is controlled by the "item_type" field.
+    </ResponseField>
+    <ResponseField name="control" type="array">
+      An array defining the control relationship. It associates the ARTICLE constant with the $items variable.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+#### Flag Column
+
+<ResponseField name="flag" type="object">
+  <Expandable title="Properties">
+    <ResponseField name="type" type="string">
+      Set to "checkbox", indicating a checkbox input field.
+    </ResponseField>
+    <ResponseField name="label" type="string">
+      The label for this field, set to "Flag".
+    </ResponseField>
+    <ResponseField name="instructions" type="string">
+      Instructions for the user: "Flag this item".
+    </ResponseField>
+    <ResponseField name="required" type="boolean">
+      Indicates if this field is required. Set to `false`.
+    </ResponseField>
+    <ResponseField name="default" type="integer">
+      The default value for this checkbox. Set to `1`, indicating it's checked by default.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Note>
+  The `$items` variable used in the "related_items" column's control array is not defined in the provided code snippet. It's assumed to contain a list of items for selection when the item type is set to ARTICLE.
+</Note>

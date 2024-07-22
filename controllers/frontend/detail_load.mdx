@@ -1,37 +1,71 @@
 ---
-title: 'Code Blocks'
-description: 'Display inline code and code blocks'
-icon: 'code'
+title: 'Detail_Load_Frontend'
+description: 'A trait for handling article details and view loading in a frontend application'
 ---
 
-## Basic
+This trait provides functionality for loading and displaying article details, as well as handling view loading with additional data preparation.
 
-### Inline Code
+## Methods
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+### detail
 
-```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
+Loads and displays the details of an article.
 
-### Code Block
+<ParamField query="pretty_url" type="string">
+  The pretty URL of the article to display
+</ParamField>
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
+<ParamField query="print" type="boolean" default={false}>
+  Whether to render the page for printing
+</ParamField>
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
+<ParamField query="return" type="boolean" default={false}>
+  If true, returns the rendered view as a string instead of outputting it
+</ParamField>
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-````
+This method performs the following tasks:
+1. Retrieves general data such as language and login status
+2. Fetches the article by its pretty URL
+3. Checks language compatibility and redirects if necessary
+4. Retrieves related articles
+5. Prepares SEO data
+6. Loads module data
+7. Renders the detail view or returns it as a string
+
+### load_view
+
+Loads and renders a view with additional data preparation.
+
+<ParamField query="view" type="string">
+  The name of the view to load
+</ParamField>
+
+<ParamField query="viewdata" type="array">
+  An array of data to pass to the view
+</ParamField>
+
+This method:
+1. Prepares OpenAI-related data
+2. Sets up SEO and Open Graph data
+3. Handles cookie warnings
+4. Prepares menu items and translations
+5. Loads and renders the specified view along with header and footer
+
+### getOpenaiData
+
+Prepares OpenAI-related data for use in views.
+
+<ParamField query="data" type="array">
+  The existing data array to augment with OpenAI data
+</ParamField>
+
+<ResponseField name="return" type="array">
+  The augmented data array containing OpenAI-related information
+</ResponseField>
+
+This method:
+1. Retrieves page settings for conditional OpenAI display
+2. Fetches available languages and language lines
+3. Retrieves and processes OpenAI prompts
+4. Determines the preselected language
+5. Gets the last chat ID

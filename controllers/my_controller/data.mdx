@@ -1,59 +1,154 @@
 ---
-title: 'Images and Embeds'
-description: 'Add image, video, and other HTML elements'
-icon: 'image'
+title: 'MY_Controller_Data'
+description: 'A trait providing various utility methods for handling article types, entity names, and image management in a PHP application.'
 ---
 
-<img
-  style={{ borderRadius: '0.5rem' }}
-  src="https://mintlify-assets.b-cdn.net/bigbend.jpg"
-/>
+## Overview
 
-## Image
+The `MY_Controller_Data` trait contains utility methods for managing article types, entity names, and image-related operations. It is designed to be used in conjunction with a controller class in a PHP application.
 
-### Using Markdown
+## Properties
 
-The [markdown syntax](https://www.markdownguide.org/basic-syntax/#images) lets you add images using the following code
+<ResponseField name="repoModuleItemId" type="boolean|int">
+  Identifier for the repository module item.
+</ResponseField>
 
-```md
-![title](/path/image.jpg)
-```
+<ResponseField name="repoData" type="array">
+  An array to store repository-related data.
+</ResponseField>
 
-Note that the image file size must be less than 5MB. Otherwise, we recommend hosting on a service like [Cloudinary](https://cloudinary.com/) or [S3](https://aws.amazon.com/s3/). You can then use that URL and embed.
+<ResponseField name="repoModuleId" type="boolean|int">
+  Identifier for the repository module.
+</ResponseField>
 
-### Using Embeds
+<ResponseField name="repoModuleType" type="boolean|string">
+  Type of the repository module.
+</ResponseField>
 
-To get more customizability with images, you can also use [embeds](/writing-content/embed) to add images
+## Methods
 
-```html
-<img height="200" src="/path/image.jpg" />
-```
+### getArticleTypeId
 
-## Embeds and HTML elements
+Retrieves the article type ID based on the given type name.
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/4KzFe50RQkQ"
-  title="YouTube video player"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-  style={{ width: '100%', borderRadius: '0.5rem' }}
-></iframe>
+<Param name="type_name" type="string">
+  The name of the article type.
+</Param>
 
-<br />
+<ResponseField name="return" type="int">
+  The corresponding article type ID.
+</ResponseField>
 
-<Tip>
+### getNoArticleTypeId
 
-Mintlify supports [HTML tags in Markdown](https://www.markdownguide.org/basic-syntax/#html). This is helpful if you prefer HTML tags to Markdown syntax, and lets you create documentation with infinite flexibility.
+Retrieves the non-article type ID based on the given type name.
 
-</Tip>
+<Param name="type_name" type="string">
+  The name of the non-article type.
+</Param>
 
-### iFrames
+<ResponseField name="return" type="int">
+  The corresponding non-article type ID.
+</ResponseField>
 
-Loads another HTML page within the document. Most commonly used for embedding videos.
+### getEntityName
 
-```html
-<iframe src="https://www.youtube.com/embed/4KzFe50RQkQ"> </iframe>
-```
+Retrieves the entity name based on the type ID and whether it's an article or not.
+
+<Param name="typeId" type="int">
+  The type ID of the entity.
+</Param>
+
+<Param name="article" type="boolean" default={true}>
+  Whether the entity is an article or not.
+</Param>
+
+<ResponseField name="return" type="string">
+  The name of the entity.
+</ResponseField>
+
+### getRowName
+
+Extracts the name or title from an entity object.
+
+<Param name="entity" type="object">
+  The entity object containing name or title properties.
+</Param>
+
+<ResponseField name="return" type="string">
+  The extracted name or title.
+</ResponseField>
+
+### getFrontendOrBackendImages
+
+Processes images based on whether the context is frontend or backend.
+
+<Param name="images" type="array">
+  An array of image objects.
+</Param>
+
+<ResponseField name="return" type="array">
+  Processed array of image objects.
+</ResponseField>
+
+### prepareModuleImages
+
+Prepares module images by setting module properties and retrieving images.
+
+<Param name="data" type="array">
+  An array containing module data.
+</Param>
+
+<ResponseField name="return" type="array">
+  Merged array of input data and retrieved image data.
+</ResponseField>
+
+### getModuleImages
+
+Retrieves and processes images for the current module.
+
+### getTeaserImagesFrontend
+
+Processes teaser images for frontend display.
+
+<Param name="images" type="array">
+  An array of image objects.
+</Param>
+
+<ResponseField name="return" type="array">
+  Processed array of frontend teaser images.
+</ResponseField>
+
+### getTeaserImages
+
+Retrieves teaser images for the current entity and type.
+
+<ResponseField name="return" type="array">
+  An array of processed teaser images.
+</ResponseField>
+
+### addTeaserImagesData
+
+Adds teaser image data to the repository data.
+
+### getBackendTeaserImages
+
+Processes teaser images for backend display.
+
+<Param name="images" type="array">
+  An array of image objects.
+</Param>
+
+<ResponseField name="return" type="array">
+  Processed array of backend teaser images.
+</ResponseField>
+
+## Private Methods
+
+### _setDocumentRoot
+
+Sets the document root property.
+
+<Note>
+This method is private and used internally by the trait.
+</Note>

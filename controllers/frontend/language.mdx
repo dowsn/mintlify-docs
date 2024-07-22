@@ -1,37 +1,105 @@
 ---
-title: 'Code Blocks'
-description: 'Display inline code and code blocks'
-icon: 'code'
+title: 'Language Frontend'
+description: 'A trait for handling language-related functionality in the frontend'
 ---
 
-## Basic
+This trait provides methods for managing language preferences and article redirection based on language settings.
 
-### Inline Code
+## Methods
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+### change_lang()
 
+Changes the language cookie based on user selection.
+
+<CodeGroup>
+```php
+public function change_lang()
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+</CodeGroup>
+
+This method sets a cookie with the user's selected language preference.
+
+<ResponseField name="Parameters">
+  <Param name="lang" type="string">
+    The selected language code (received from POST data).
+  </Param>
+</ResponseField>
+
+<Note>
+  The cookie is set with the following properties:
+  - Name: 'selected_lang'
+  - Expiration: 86500 seconds (approximately 24 hours)
+  - Path: '/'
+  - Secure: TRUE
+</Note>
+
+### checkLanguageOfArticleOrRedirect()
+
+Checks the language of an article and redirects if necessary.
+
+<CodeGroup>
+```php
+function checkLanguageOfArticleOrRedirect($article)
 ```
+</CodeGroup>
 
-### Code Block
+This method compares the current language with the article's language and performs redirections based on certain conditions.
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
+<ResponseField name="Parameters">
+  <Param name="article" type="object">
+    The article object to check.
+  </Param>
+</ResponseField>
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+<Note>
+  - If there's only one language, the method returns immediately.
+  - If no language cookie is set, it sets the cookie to the main language.
+  - The method performs various redirections based on the article's language and the current language setting.
+</Note>
+
+### getOtherLanguageArticle()
+
+Retrieves the article in the other language.
+
+<CodeGroup>
+```php
+public function getOtherLanguageArticle($article)
 ```
+</CodeGroup>
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-````
+This method finds and returns the corresponding article in the other language.
+
+<ResponseField name="Parameters">
+  <Param name="article" type="object">
+    The current article object.
+  </Param>
+</ResponseField>
+
+<ResponseField name="Returns">
+  <Param name="other_article" type="object">
+    The corresponding article in the other language.
+  </Param>
+</ResponseField>
+
+## Constants Used
+
+The trait uses several constants that should be defined elsewhere in the application:
+
+- `NUMBER_OF_LANGUAGES`
+- `MAIN_LANGUAGE`
+- `SECOND_LANGUAGE`
+
+<Warning>
+  Ensure these constants are properly defined before using this trait.
+</Warning>
+
+## Dependencies
+
+This trait depends on the following:
+
+- CodeIgniter's input library for cookie handling
+- A model or service (referred to as `$this->fm`) for fetching article data
+
+<Note>
+  Make sure the required dependencies are properly initialized before using the methods in this trait.
+</Note>

@@ -1,5 +1,5 @@
 ---
-title: 'Article_Entity_Content Trait'
+title: 'Article_Entity_Content'
 description: 'Trait for handling entities with associated articles in a content management system'
 ---
 
@@ -68,27 +68,3 @@ The method defines a set of input fields (columns) for the entity. Key fields in
 <ResponseField name="[table]_tags_relation" type="m_n_relation">
   Manages the many-to-many relationship between the specific entity type and its tags.
 </ResponseField>
-
-## Usage Notes
-
-- This trait is designed to be used within a class that has access to methods like `setTableName()`, `getSelector()`, `prepareTable()`, and properties like `bc` (likely a database crud object).
-- It assumes the existence of a tags system and related database tables.
-- The `normals()` method prepares the data and renders a view ('backend/crud/crud'), suggesting it's part of a larger CRUD system.
-
-<Note>
-The trait uses several properties (`entityTypeId`, `table`, `tableSingular`, `tablePrettyName`) that should be defined in the class using this trait.
-</Note>
-
-<Warning>
-- The trait uses constants (`TABLE_ENTITY_WITH_ARTICLE`, etc.) which should be defined elsewhere in the application.
-- The `prepareTable()` and `bc->execute()` methods are not defined in this trait and their functionality is crucial for the proper operation of the `normals()` method.
-- This trait seems to be part of a larger system and may depend on other components not visible in this snippet.
-</Warning>
-
-## Customization
-
-To use this trait for a specific entity type:
-1. Include the trait in your entity controller class.
-2. Set the appropriate values for `table`, `tableSingular`, `tablePrettyName`, and `entityTypeId`.
-3. Modify the `listColumns`, `filterColumns`, and `columns` arrays as needed for your specific entity type.
-4. Ensure all required methods and properties are available in the using class or its parent classes.

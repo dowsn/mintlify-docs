@@ -1,66 +1,280 @@
 ---
-title: 'Navigation'
-description: 'The navigation field in mint.json defines the pages that go in the navigation menu'
-icon: 'map'
+title: 'Data_Frontend'
+description: 'A trait for handling frontend data operations in a CodeIgniter application'
 ---
 
-The navigation menu is the list of links on every website.
+## Overview
 
-You will likely update `mint.json` every time you add a new page. Pages do not show up automatically.
+The `Data_Frontend` trait provides methods for handling various frontend data operations, including article retrieval, entity information, event handling, and search functionality.
 
-## Navigation syntax
+## Article Information
 
-Our navigation syntax is recursive which means you can make nested navigation groups. You don't need to include `.mdx` in page names.
+### getArticleInfo
 
-<CodeGroup>
+Retrieves all information about an article.
 
-```json Regular Navigation
-"navigation": [
-    {
-        "group": "Getting Started",
-        "pages": ["quickstart"]
-    }
-]
-```
+<Param name="p" type="object">
+  The article object to retrieve information for.
+</Param>
 
-```json Nested Navigation
-"navigation": [
-    {
-        "group": "Getting Started",
-        "pages": [
-            "quickstart",
-            {
-                "group": "Nested Reference Pages",
-                "pages": ["nested-reference-page"]
-            }
-        ]
-    }
-]
-```
+<Param name="has_related" type="boolean" default="true">
+  Whether to include related items.
+</Param>
 
-</CodeGroup>
+<ResponseField name="return" type="object|boolean">
+  Returns the article object with additional information or `false` if the article is not found or not visible.
+</ResponseField>
 
-## Folders
+### getItemVisibility
 
-Simply put your MDX files in folders and update the paths in `mint.json`.
+Checks if an item is visible based on its publish date and visibility settings.
 
-For example, to have a page at `https://yoursite.com/your-folder/your-page` you would make a folder called `your-folder` containing an MDX file called `your-page.mdx`.
+<Param name="item" type="object">
+  The item object to check visibility for.
+</Param>
 
-<Warning>
+<ResponseField name="return" type="boolean">
+  Returns `true` if the item is visible, `false` otherwise.
+</ResponseField>
 
-You cannot use `api` for the name of a folder unless you nest it inside another folder. Mintlify uses Next.js which reserves the top-level `api` folder for internal server calls. A folder name such as `api-reference` would be accepted.
+## Entity Information
 
-</Warning>
+### getEntityTemplate
 
-```json Navigation With Folder
-"navigation": [
-    {
-        "group": "Group Name",
-        "pages": ["your-folder/your-page"]
-    }
-]
-```
+Retrieves and formats information for a generic entity.
 
-## Hidden Pages
+<Param name="a" type="object">
+  The entity object to retrieve information for.
+</Param>
 
-MDX files not included in `mint.json` will not show up in the sidebar but are accessible through the search bar and by linking directly to them.
+<Param name="has_related" type="boolean" default="true">
+  Whether to include related items.
+</Param>
+
+<ResponseField name="return" type="object">
+  Returns the entity object with additional information.
+</ResponseField>
+
+### getNormalInfo
+
+Retrieves information for a normal entity type.
+
+<Param name="a" type="object">
+  The normal entity object to retrieve information for.
+</Param>
+
+<ResponseField name="return" type="object">
+  Returns the normal entity object with additional information.
+</ResponseField>
+
+### getLocationInfo
+
+Retrieves information for a location entity type.
+
+<Param name="a" type="object">
+  The location entity object to retrieve information for.
+</Param>
+
+<ResponseField name="return" type="object">
+  Returns the location entity object with additional information.
+</ResponseField>
+
+## Event Handling
+
+### getFutureEvents
+
+Retrieves all future events of a certain type.
+
+<Param name="type_name" type="string">
+  The type of events to retrieve.
+</Param>
+
+<ResponseField name="return" type="array">
+  Returns an array of future event objects, sorted by start date.
+</ResponseField>
+
+### getEventsOfCategory
+
+Retrieves all events of a certain category.
+
+<Param name="group_items" type="array">
+  The array of event items to filter.
+</Param>
+
+<Param name="cat_id" type="int">
+  The category ID to filter by.
+</Param>
+
+<ResponseField name="return" type="array">
+  Returns an array of event objects belonging to the specified category.
+</ResponseField>
+
+### getFutureEvent
+
+Determines if an event is in the future.
+
+<Param name="event_item" type="object">
+  The event item to check.
+</Param>
+
+<ResponseField name="return" type="object|boolean">
+  Returns the event item if it's in the future, `false` otherwise.
+</ResponseField>
+
+## General Information
+
+### addCategoryInfo
+
+Adds additional information to a category object.
+
+<Param name="cat" type="object">
+  The category object to add information to.
+</Param>
+
+<ResponseField name="return" type="object">
+  Returns the category object with additional information.
+</ResponseField>
+
+### getColor
+
+Retrieves the hex color code for a given color ID.
+
+<Param name="color_id" type="int">
+  The ID of the color to retrieve.
+</Param>
+
+<ResponseField name="return" type="string">
+  Returns the hex color code.
+</ResponseField>
+
+### getGeneralTags
+
+Retrieves general tags based on a tag relation array.
+
+<Param name="tag_relation_array" type="array">
+  The array of tag relations.
+</Param>
+
+<ResponseField name="return" type="array">
+  Returns an array of tag objects.
+</ResponseField>
+
+## Group Data
+
+### getArticleGroupByType
+
+Retrieves all articles of a certain type.
+
+<Param name="typeId" type="int">
+  The type ID to filter articles by.
+</Param>
+
+<Param name="items" type="array" default="[]">
+  Optional array of items to filter from instead of fetching all visible items.
+</Param>
+
+<ResponseField name="return" type="array">
+  Returns an array of article objects of the specified type.
+</ResponseField>
+
+### getArticleGroupByCategory
+
+Retrieves all articles of a certain category.
+
+<Param name="categoryId" type="int">
+  The category ID to filter articles by.
+</Param>
+
+<Param name="items" type="array" default="[]">
+  Optional array of items to filter from instead of fetching all visible items.
+</Param>
+
+<ResponseField name="return" type="array">
+  Returns an array of article objects belonging to the specified category.
+</ResponseField>
+
+### getArticleGroupFromArray
+
+Retrieves articles based on an array of entity IDs.
+
+<Param name="array" type="array">
+  The array of entity objects to retrieve articles for.
+</Param>
+
+<Param name="type_name" type="string">
+  The type name of the articles to retrieve.
+</Param>
+
+<Param name="id_name" type="string" default="id">
+  The name of the ID field in the entity objects.
+</Param>
+
+<ResponseField name="return" type="array">
+  Returns an array of article objects.
+</ResponseField>
+
+### getArticlesInfo
+
+Retrieves information for an array of article items.
+
+<Param name="items" type="array|object">
+  The array of article items or a single article item.
+</Param>
+
+<ResponseField name="return" type="array|object">
+  Returns an array of article objects with additional information or a single article object with additional information.
+</ResponseField>
+
+## Related Items
+
+### getRelated
+
+Retrieves related items from a related table.
+
+<Param name="id" type="int">
+  The ID of the item to find relations for.
+</Param>
+
+<Param name="related_table" type="string">
+  The name of the related table.
+</Param>
+
+<Param name="origin_table" type="string">
+  The name of the origin table.
+</Param>
+
+<Param name="same" type="boolean" default="false">
+  Whether to include items where both related IDs are the same.
+</Param>
+
+<ResponseField name="return" type="array">
+  Returns an array of related item objects.
+</ResponseField>
+
+## Search
+
+### search_item
+
+Searches for a term within an item's attributes and modules.
+
+<Param name="item" type="object">
+  The item object to search within.
+</Param>
+
+<Param name="term" type="string">
+  The search term to look for.
+</Param>
+
+<ResponseField name="return" type="boolean">
+  Returns `true` if the term is found, `false` otherwise.
+</ResponseField>
+
+## Shop Information
+
+### getGlobalShopInfo
+
+Retrieves global shop information, including product details.
+
+<ResponseField name="return" type="array">
+  Returns an array containing shop information, including an array of product objects.
+</ResponseField>

@@ -1,5 +1,5 @@
 ---
-title: 'Helper_Content Trait'
+title: 'Helper_Content'
 description: 'Utility trait for content management in a PHP application'
 ---
 
@@ -82,28 +82,3 @@ Creates a new CSV file with a random number appended to the name.
 ### downloadCSVFile($filePath)
 
 Handles the download of a CSV file.
-
-## Usage Notes
-
-- This trait is designed to be used within a class that has access to CodeIgniter's database and other utility functions.
-- It assumes the existence of several constants (e.g., `TABLE_ENTITY_WITH_ARTICLE`, `ARTICLE_TYPES`, `NUMBER_OF_LANGUAGES`) which should be defined elsewhere in the application.
-- The Google Analytics methods require proper setup of Google Analytics credentials and the Google Analytics Data API.
-
-<Note>
-The trait uses several properties and methods that should be defined in the class using this trait, such as `$this->user`, `$this->bc`, and various model methods.
-</Note>
-
-<Warning>
-- The CSV import function (`csvToDb`) directly inserts data into the database without extensive validation. Ensure proper input sanitization is implemented when using this method.
-- The Google Analytics methods require the `google/analytics-data` package and proper configuration of credentials.
-- Some methods use direct file system operations which may require appropriate permissions in the production environment.
-</Warning>
-
-## Customization
-
-To use this trait effectively:
-1. Include it in your content management class.
-2. Ensure all required properties, methods, and constants are available in the using class or its parent classes.
-3. Configure Google Analytics credentials properly if using analytics features.
-4. Implement proper error handling and input validation, especially for CSV imports and file operations.
-5. Adjust file paths and URL structures as needed for your specific application setup.

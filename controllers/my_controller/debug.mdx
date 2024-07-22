@@ -1,37 +1,189 @@
 ---
-title: 'Code Blocks'
-description: 'Display inline code and code blocks'
-icon: 'code'
+title: 'MY_Controller_Debug'
+description: 'A trait for debugging and error handling in CodeIgniter controllers'
 ---
 
-## Basic
+## Overview
 
-### Inline Code
+The `MY_Controller_Debug` trait provides utility methods for debugging, error handling, and validation in CodeIgniter controllers. It includes functions for inserting error logs, checking method existence, and validating various aspects of the application.
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+## Methods
 
-```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
+### insertError
 
-### Code Block
+Inserts an error message into the database and terminates the script execution.
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
+<CodeGroup>
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+```php
+public function insertError($error_msg = 'Undefined Error Message', $page = 'Undefined Page', $file = '', $line = '')
 ```
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+</CodeGroup>
+
+<Param name="error_msg" type="string" default="'Undefined Error Message'">
+  The error message to be logged
+</Param>
+
+<Param name="page" type="string" default="'Undefined Page'">
+  The page where the error occurred
+</Param>
+
+<Param name="file" type="string" default="">
+  The file where the error occurred (defaults to the current file)
+</Param>
+
+<Param name="line" type="string" default="">
+  The line number where the error occurred (defaults to the current line)
+</Param>
+
+<Note>
+  This method inserts the error information into the `error_log` table and then terminates the script execution.
+</Note>
+
+### function_exists
+
+Checks if a method exists in the current class.
+
+<CodeGroup>
+
+```php
+public function function_exists($method)
 ```
-````
+
+</CodeGroup>
+
+<Param name="method" type="string">
+  The name of the method to check
+</Param>
+
+<ResponseField name="return" type="boolean">
+  Returns `true` if the method exists, `false` otherwise
+</ResponseField>
+
+### methodExists
+
+Checks if a method exists in a specified model and inserts an error if it doesn't.
+
+<CodeGroup>
+
+```php
+public function methodExists($model_shortcut, $method, $topic = 'Undefined Topic')
+```
+
+</CodeGroup>
+
+<Param name="model_shortcut" type="string">
+  The model shortcut name
+</Param>
+
+<Param name="method" type="string">
+  The name of the method to check
+</Param>
+
+<Param name="topic" type="string" default="'Undefined Topic'">
+  The topic for the error message
+</Param>
+
+<Note>
+  If the method doesn't exist, it calls `insertError` and terminates the script.
+</Note>
+
+### functionExists
+
+Checks if a function exists in the current class and inserts an error if it doesn't.
+
+<CodeGroup>
+
+```php
+public function functionExists($function_name, $topic = 'Undefined Topic')
+```
+
+</CodeGroup>
+
+<Param name="function_name" type="string">
+  The name of the function to check
+</Param>
+
+<Param name="topic" type="string" default="'Undefined Topic'">
+  The topic for the error message
+</Param>
+
+<Note>
+  If the function doesn't exist, it calls `insertError` and terminates the script.
+</Note>
+
+### tableExists
+
+Checks if a database table exists and inserts an error if it doesn't.
+
+<CodeGroup>
+
+```php
+public function tableExists($table_name, $topic = 'Undefined Topic')
+```
+
+</CodeGroup>
+
+<Param name="table_name" type="string">
+  The name of the table to check
+</Param>
+
+<Param name="topic" type="string" default="'Undefined Topic'">
+  The topic for the error message
+</Param>
+
+<Note>
+  If the table doesn't exist, it calls `insertError` and terminates the script.
+</Note>
+
+### variableExists
+
+Checks if a variable exists and is not false, null, or 'undefined', and inserts an error if it doesn't meet these criteria.
+
+<CodeGroup>
+
+```php
+public function variableExists($variable_name, $variable, $topic = 'Undefined Topic')
+```
+
+</CodeGroup>
+
+<Param name="variable_name" type="string">
+  The name of the variable to check
+</Param>
+
+<Param name="variable" type="mixed">
+  The variable to check
+</Param>
+
+<Param name="topic" type="string" default="'Undefined Topic'">
+  The topic for the error message
+</Param>
+
+<Note>
+  If the variable doesn't exist or is false, null, or 'undefined', it calls `insertError` and terminates the script.
+</Note>
+
+### postPropertiesExist
+
+Checks if specified properties exist in the $_POST array and inserts an error if any are missing.
+
+<CodeGroup>
+
+```php
+public function postPropertiesExist($properties, $topic = 'Undefined Topic')
+```
+
+</CodeGroup>
+
+<Param name="properties" type="array">
+  An array of property names to check in $_POST
+</Param>
+
+<Param name="topic" type="string" default="'Undefined Topic'">
+  The topic for the error message
+</Param>
+
+<Note>
+  If any of the specified properties ar

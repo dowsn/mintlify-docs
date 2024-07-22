@@ -1,37 +1,353 @@
 ---
-title: 'Code Blocks'
-description: 'Display inline code and code blocks'
-icon: 'code'
+title: 'Module Management'
+description: 'Functions and data structures for managing various content modules'
 ---
 
-## Basic
+## Module Retrieval Functions
 
-### Inline Code
+These functions are responsible for retrieving different types of modules based on item ID and parent.
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+<CodeGroup>
 
+```php getModuleTextByItemId
+$data['modulesText'] = $this->fm->getModuleTextByItemId($itemId, $parent);
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+
+```php getModuleCollapsableByItemId
+$modulesCollapsable = $this->fm->getModuleCollapsableByItemId($itemId, $parent)->result_array();
 ```
 
-### Code Block
+```php getModuleSectionTitleByItemId
+$data['modulesSectionTitle'] = $this->fm->getModuleSectionTitleByItemId($itemId, $parent);
+```
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
+</CodeGroup>
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
+<Note>
+The `$this->fm` object is used to call these methods, suggesting they are part of a model or service class.
+</Note>
+
+## Module Types
+
+The code retrieves various types of modules, including:
+
+- Text modules
+- Collapsable modules
+- Section title modules
+- Horizontal rule modules
+- Marquee modules
+- Quote modules
+- News modules
+- Dropdown modules
+- Download modules
+- Image modules
+- HTML modules
+- Video modules
+- Headline modules
+- PDF modules
+- Start modules
+- Newsletter modules
+- Gallery modules
+- Related modules
+- Event modules
+- Column start/end modules
+
+## Module Processing
+
+### Collapsable Modules
+
+Collapsable modules are processed using the `prepareModuleImages` function:
+
+```php
+$modulesCollapsableArray = array();
+foreach ($modulesCollapsable as $item) {
+  $modulesCollapsableArray[] = $this->prepareModuleImages($item);
 }
 ```
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
+### Download Modules
+
+Download modules are processed to include file and image information:
+
+```php
+$files_modules_array = [];
+foreach ($modulesDownload as $p) {
+    $files = array();
+    $images = array();
+
+    if($p['pdf']){
+        $file = $this->fm->getFileById($p['pdf']);
+        $files[] = $file;
     }
+
+    if($p['file_tag']){
+        $files = $this->fm->getFilesByTag($p['file_tag']);
+    }
+
+    $p['files'] = $files;
+    $p['images'] = $images;
+
+    $files_modules_array[] = $p;
 }
 ```
-````
+
+### Gallery and Image Modules
+
+Gallery and image modules are processed similarly to collapsable modules:
+
+```php
+$gallery_modules_array = array();
+foreach ($modulesGalleries as $gallery) {
+  $gallery_modules_array[] = $this->prepareModuleImages($gallery);
+}
+
+$image_modules_array = array();
+foreach ($modulesImage as $item) {
+ $image_modules_array[] = $this->prepareModuleImages($item);
+}
+```
+
+### Start Modules
+
+Start modules are processed to include additional image information:
+
+```php
+$data['modulesStart'] = array();
+foreach ($modulesStart as $item) {
+    $item['alt'] = '';
+    $item['credits'] = '';
+    if ($item['repo_id'] != NULL) {
+        $repo_item = $this->fm->getPublicRepoItemById($item['repo_id']);
+        if ($repo_item != false) {
+            $item['header_img'] = $repo_item->fname;
+            if ($this->language == SECOND_LANGUAGE) {
+                $item['alt'] = $repo_item->alt_text_en;
+                $item['credits'] = $repo_item->credits_en;
+            } else {
+                $item['alt'] = $repo_item->alt_text;
+                $item['credits'] = $repo_item->credits;
+            }
+        }
+    }
+    $data['modulesStart'][] = $item;
+}
+```
+
+## Module Merging
+
+All processed modules are merged into a single array and sorted by their 'top' value:
+
+```php
+$data['modules'] = array_merge(
+    array(),
+    $data['modulesText']->result_array(),
+    $data['modulesSectionTitle']->result_array(),
+    $data['modulesHr']->result_array(),
+    // ... [other module arrays] ...
+    $data['modulesColumnEnd']->result_array()
+);
+
+usort($data['modules'], function ($a, $b) {
+    return $a['top'] <=> $b['top'];
+});
+```
+
+<Note>
+The final `$data['modules']` array contains all the processed modules sorted by their 'top' value, which likely represents their display order.
+</Note>
+
+## Helper Functions
+
+### getRelatedItemsByTag
+
+This function retrieves related articles based on a tag ID:
+
+```php
+function getRelatedItemsByTag($tag_id)
+{
+    $article_type = $this->getArticleTypeId('normals');
+    $articles = $this->fm->getArticlesByTag($tag_id, $article_type);
+    return $articles;
+}
+```
+
+<ResponseField name="tag_id" type="int">
+  The ID of the tag to fetch related articles for
+</ResponseField>
+
+<ResponseField name="return" type="array">
+  An array of related articles
+</ResponseField>
+
+
+
+## Specialized Modules
+
+### Related Modules
+
+Related modules are processed to fetch and organize related items based on tags or specific article IDs:
+
+```php
+$related_modules_array = array();
+foreach ($modulesRelated as $rel) {
+    $related_items_array = array();
+    $rel_ids = $rel['rel_id'];
+    $rel_ids_array = array_map('intval', explode(',', $rel_ids));
+
+    if ($rel['rel_type'] == 'tag') {
+        foreach ($rel_ids_array as $rel_id) {
+            $related_items_array = $this->getRelatedItemsByNormalTag($rel_id);
+        }
+    } elseif ($rel['rel_type'] == 'articles') {
+        foreach ($rel_ids_array as $rel_id) {
+            $rel_article = $this->cm->getItemById($rel_id);
+            if ($rel_article != false) {
+                $rel_article = $this->getArticleInfo($rel_article);
+                if ($rel_article != false) {
+                    $related_items_array[] = $rel_article;
+                }
+            }
+        }
+    }
+
+    if ($rel['num_items'] != NULL && $rel['num_items'] != 0) {
+        $related_items_array = array_slice($related_items_array, 0, $rel['num_items']);
+    }
+
+    $rel['related_items'] = $related_items_array;
+    $related_modules_array[] = $rel;
+}
+```
+
+<Note>
+Related modules can be based on tags or specific article IDs. The number of items can be limited using the `num_items` parameter.
+</Note>
+
+### Event Modules
+
+Event modules are processed differently based on whether they are for future events or not:
+
+```php
+$event_modules_array = array();
+foreach ($modulesEvent as $rel) {
+    $event_items_array = array();
+
+    if($rel['future_events'] == 0 || $article->type != ARTICLE_TYPE_EXHIBITION) {
+        $module_related_events = $this->fm->getEventTagModuleRelatedItems($rel['rel_id']);
+        // Process events...
+    } else {
+        $start_date = date('Y-m-d', strtotime('-1 day', strtotime($article->exh->start_date_time)));
+        $module_related_events = $this->fm->getEventModuleFutureItems($start_date);
+        // Process future events...
+    }
+
+    // Common processing for both types of events...
+    foreach ($module_related_events as $ei) {
+        $rel_article = $this->fm->getEventArticle($ei['id']);
+        if($rel_article != false) {
+            $ei['pretty_url'] = $rel_article->pretty_url;
+        } else {
+            $ei['pretty_url'] = '';
+        }
+        $ei['display_title'] = ($this->language == MAIN_LANGUAGE) ? $ei['name'] : $ei['name_en'];
+        $ei['display_subheader'] = ($this->language == MAIN_LANGUAGE) ? $ei['subheader'] : $ei['subheader_en'];
+        $ei['display_date'] = $ei['start_date'];
+
+        $event_items_array[] = $ei;
+    }
+
+    if($rel['num_items'] != NULL && $rel['num_items'] != 0) {
+        $event_items_array = array_slice($event_items_array, 0, $rel['num_items']);
+    }
+
+    $rel['related_items'] = $event_items_array;
+    $event_modules_array[] = $rel;
+}
+```
+
+<Note>
+Event modules handle both current and future events, with different processing logic for each type.
+</Note>
+
+### PDF Modules
+
+PDF modules are processed to include additional image information:
+
+```php
+$data['modulesPdf'] = array();
+foreach ($modulesPdf as $item) {
+    $item['alt'] = '';
+    $item['credits'] = '';
+    if ($item['repo_id'] != NULL) {
+        $repo_item = $this->fm->getPublicRepoItemById($item['repo_id']);
+        if ($repo_item != false) {
+            $item['image'] = $repo_item->fname;
+            if ($this->language == SECOND_LANGUAGE) {
+                $item['alt'] = $repo_item->alt_text_en;
+                $item['credits'] = $repo_item->credits_en;
+            } else {
+                $item['alt'] = $repo_item->alt_text;
+                $item['credits'] = $repo_item->credits;
+            }
+        }
+    }
+    $data['modulesPdf'][] = $item;
+}
+```
+
+## Utility Functions
+
+### prepareModuleImages
+
+This function is used to prepare images for various module types:
+
+```php
+private function prepareModuleImages($item) {
+    // Implementation not provided in the given code snippet
+    // This function likely processes and formats image data for modules
+    return $item;
+}
+```
+
+### getArticleInfo
+
+Used to retrieve and format article information:
+
+```php
+private function getArticleInfo($article) {
+    // Implementation not provided in the given code snippet
+    // This function likely retrieves and formats additional article data
+    return $article;
+}
+```
+
+### getRelatedItemsByNormalTag
+
+Retrieves related items based on a normal tag:
+
+```php
+private function getRelatedItemsByNormalTag($tag_id) {
+    // Implementation not provided in the given code snippet
+    // This function likely retrieves articles related to a specific tag
+    return $related_items;
+}
+```
+
+## Language Handling
+
+The code uses a language variable to determine which language version of content to display:
+
+```php
+$ei['display_title'] = ($this->language == MAIN_LANGUAGE) ? $ei['name'] : $ei['name_en'];
+$ei['display_subheader'] = ($this->language == MAIN_LANGUAGE) ? $ei['subheader'] : $ei['subheader_en'];
+```
+
+<Note>
+The system supports at least two languages, with `MAIN_LANGUAGE` and `SECOND_LANGUAGE` constants used to determine which content version to display.
+</Note>
+
+## Conclusion
+
+This module management system provides a flexible way to handle various types of content modules, including text, images, events, related content, and more. It processes and organizes these modules based on their type and specific requirements, ultimately merging them into a single, sorted array for display.
+
+The system also handles multilingual content, allowing for easy switching between different language versions of the content.

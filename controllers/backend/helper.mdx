@@ -1,5 +1,5 @@
 ---
-title: 'Helper_Backend Trait'
+title: 'Helper_Backend'
 description: 'Utility trait for backend operations in a PHP application'
 ---
 
@@ -118,17 +118,3 @@ The `csvUpdateWhereId()` function uses several configuration variables that shou
 <ResponseField name="$keyArray" type="array">
   An array of keys in the CSV file, in the order they appear. These keys should correspond to database column names.
 </ResponseField>
-
-## Usage Notes
-
-- This trait is designed to be used within a class that has access to CodeIgniter's features (e.g., `$this->load`, `$this->page`).
-- Many functions assume the existence of other methods (`regex_match`, `cm->updateKeyWithData`) which are not defined in this trait.
-- The database functions handle character encoding and BLOB data, making them suitable for complex data migrations.
-- The `csvUpdateWhereId()` function assumes a specific structure for the CSV file and database table. It should be adapted for different use cases.
-
-<Warning>
-- The database functions contain hardcoded credentials, which is a security risk. In a production environment, use secure configuration management.
-- The CSV processing function doesn't include input validation, which could lead to SQL injection if not properly sanitized.
-- Error handling in some functions could be improved to provide more detailed feedback and logging.
-- The trait uses direct file system operations (`unlink()`) which may require appropriate permissions and error handling in production environments.
-</Warning>

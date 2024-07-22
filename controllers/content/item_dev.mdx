@@ -1,5 +1,5 @@
 ---
-title: 'Item_Dev_Content Trait'
+title: 'Item_Dev_Content'
 description: 'Trait for managing articles, translations, constants, and error logs in a content management system'
 ---
 
@@ -55,30 +55,3 @@ Displays and manages the error log.
 
 - Constants management for system-wide settings
 - Error log viewing and management
-
-## Usage Notes
-
-- This trait is designed to be used within a class that has access to CodeIgniter's features and a custom CRUD library.
-- It assumes the existence of several model methods (e.g., `$this->cm->removeArticle()`, `$this->fm->getAnyItemByPrettyURL()`).
-- The trait uses constants (e.g., `MAIN_LANGUAGE`, `SECOND_LANGUAGE`) which should be defined elsewhere in the application.
-- Article types are expected to be defined in a `ARTICLE_TYPES` constant.
-
-<Note>
-The trait uses several properties and methods that should be defined in the class using this trait, such as `$this->user`, `$this->pagination`, etc.
-</Note>
-
-<Warning>
-- The article removal process doesn't include checks for related data. Ensure that all necessary cleanup is performed when removing articles.
-- Pretty URL generation uses `bin2hex(random_bytes(10))`, which may not be suitable for all environments. Consider a more robust URL generation method if needed.
-- Direct database operations are used in some methods. Implement proper input validation and error handling in production environments.
-</Warning>
-
-## Customization
-
-To use this trait effectively:
-1. Include it in your content management class.
-2. Ensure all required properties, methods, and constants are available in the using class or its parent classes.
-3. Configure the `ARTICLE_TYPES` constant to match your system's article types.
-4. Adjust the CRUD configurations (columns, filters, etc.) to match your specific requirements.
-5. Implement proper error handling and input validation, especially for database operations and file handling.
-6. Consider extending the pretty URL generation method if a more specific format is required.

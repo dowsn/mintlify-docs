@@ -1,5 +1,5 @@
 ---
-title: 'Image_Content Trait'
+title: 'Image_Content'
 description: 'Trait for handling image repository and teaser image functionality in a PHP application'
 ---
 
@@ -84,29 +84,3 @@ Retrieves repository data including categories and images.
 - Image filtering based on various criteria (date, category, tags, etc.)
 - Image cropping functionality
 - Category management for images
-
-## Usage Notes
-
-- This trait is designed to be used within a class that has access to CodeIgniter's features (e.g., `$this->load`, `$this->page`).
-- It assumes the existence of several model methods (e.g., `$this->cm->getRepoCategories()`, `$this->cm->getRepositoryImages()`).
-- The trait uses a custom CRUD library (`besc_crud`) for managing image categories.
-- Image cropping uses the `image_moo` library.
-
-<Note>
-The trait uses several properties and methods that should be defined in the class using this trait, such as `$this->repoFilterKeys`, `$this->nullToString()`, etc.
-</Note>
-
-<Warning>
-- The image cropping function directly manipulates files on the server. Ensure proper file permissions and security measures are in place.
-- Some methods use direct database queries and file system operations. Implement proper input validation and error handling in production environments.
-- The trait assumes specific database structure and naming conventions. Ensure your database schema matches these assumptions.
-</Warning>
-
-## Customization
-
-To use this trait effectively:
-1. Include it in your content management class.
-2. Ensure all required properties, methods, and libraries are available in the using class or its parent classes.
-3. Configure the image upload paths and URL structures according to your application's setup.
-4. Implement proper error handling and input validation, especially for file operations and database queries.
-5. Adjust the filtering logic in `repoFilter()` if needed to match your specific requirements.

@@ -1,98 +1,146 @@
 ---
-title: 'Backend Controller'
-description: 'Documentation for the Backend controller class'
+title: 'Main'
+description: 'Authentication controller for user management and login functionality'
 ---
 
 ## Overview
 
-The `Backend` class is a controller in a CodeIgniter-based application. It handles backend functionality and includes various helper methods and libraries for managing user authentication, file operations, and data processing.
+The `Authentication` class extends `MY_Controller` and provides functionality for user authentication, login, password reset, and user settings management.
 
-## Class: Backend
+## Methods
 
-Extends `MY_Controller`
+### getUser
 
-### Constructor
+Retrieves the currently logged-in user's data.
 
-The constructor performs the following actions:
+```php
+static function getUser()
+```
 
-- Calls the parent constructor
-- Loads the URL helper
-- Checks if the user is logged in, redirecting to login if not
-- Loads various libraries: zip, form validation, FPDF, FPDI, PHPExcel
-- Initializes user data and BESC CRUD library
+<ResponseField name="Returns" type="object|null">
+  User data object if a user is logged in, null otherwise.
+</ResponseField>
+
+### showLogin
+
+Displays the login page.
+
+```php
+public function showLogin($errormessage = '')
+```
+
+<Param name="errormessage" type="string">
+  Optional error message to display on the login page.
+</Param>
+
+### checkLogin
+
+Checks if a user is currently logged in.
+
+```php
+public function checkLogin()
+```
+
+<ResponseField name="Returns" type="json">
+  JSON object containing login status and menu text.
+</ResponseField>
+
+### loginUser
+
+Processes user login attempt.
+
+```php
+public function loginUser()
+```
 
 <Note>
-  The constructor includes a login check and will redirect unauthenticated users to the login page.
+  This method handles form submission from the login page and redirects the user based on authentication results.
 </Note>
 
-### Properties
+### resetPw
 
-<ResponseField name="user" type="object">
-  Stores the current user's data
+Initiates the password reset process for a given email address.
+
+```php
+public function resetPw()
+```
+
+<Note>
+  This method sends a password reset email to the user if the email address is valid and associated with an account.
+</Note>
+
+### logout
+
+Logs out the current user and destroys the session.
+
+```php
+public function logout()
+```
+
+### usersettings
+
+Displays the user settings page.
+
+```php
+public function usersettings($success = false)
+```
+
+<Param name="success" type="boolean">
+  Indicates whether to display a success message.
+</Param>
+
+### updateUser
+
+Updates user information based on form submission.
+
+```php
+public function updateUser()
+```
+
+<Note>
+  This method handles form validation and updates user data, including password if provided.
+</Note>
+
+## Helper Methods
+
+### password_check
+
+Validates password strength.
+
+```php
+public function password_check($password)
+```
+
+<Param name="password" type="string">
+  The password to validate.
+</Param>
+
+<ResponseField name="Returns" type="boolean">
+  True if the password meets the required criteria, false otherwise.
 </ResponseField>
 
-<ResponseField name="base_url" type="string">
-  Base URL of the application (not explicitly set in the provided code)
+### email_exists
+
+Checks if an email address exists in the newsletter subscribers list.
+
+```php
+public function email_exists($email)
+```
+
+<Param name="email" type="string">
+  The email address to check.
+</Param>
+
+<ResponseField name="Returns" type="boolean">
+  True if the email exists, false otherwise.
 </ResponseField>
-
-<ResponseField name="module_tables" type="array">
-  Array to store module tables (empty in the provided code)
-</ResponseField>
-
-### Methods
-
-#### index()
-
-The main entry point for the Backend controller.
-
-<ResponseField name="Return" type="void">
-  Renders the backend home page with widget data
-</ResponseField>
-
-This method:
-1. Calls `widget_data()` to get widget information
-2. Loads the 'backend/widgets' view with the widget data
-3. Calls the `page()` method to render the 'backend/home' view with the widgets included
-
-### Traits
-
-The class uses the `Helper_Backend` trait, which likely provides additional helper methods for backend operations.
-
-<Warning>
-  The implementation of the `Helper_Backend` trait is not provided in the given code snippet. Refer to the `Helper_Backend.php` file for details on the available helper methods.
-</Warning>
 
 ## Dependencies
 
-The Backend controller relies on several external libraries and components:
-
-- CodeIgniter framework
-- MY_Controller (custom controller, likely extending CI_Controller)
-- Authentication_model
-- BESC_crud library
-- FPDF library
-- FPDI library
-- PHPExcel library
-
-## Usage Example
-
-The Backend controller is typically used as the main entry point for authenticated backend operations. Here's a basic example of how it might be used:
-
-<CodeGroup>
-```php Route Configuration
-$route['backend'] = 'backend/index';
-```
-
-```php Controller Usage
-class SomeBackendFeature extends Backend {
-    public function someAction() {
-        // Your backend logic here
-        // You have access to $this->user, BESC_crud, and other initialized components
-    }
-}
-```
-</CodeGroup>
+- This class relies on the `Authentication_model` for database operations.
+- PHPMailer is used for sending password reset emails.
+- A custom `PasswordHash` library is used for password hashing.
 
 <Note>
-  Ensure that all necessary libraries and dependencies are properly installed and configured in your CodeIgniter application for the Backend controller to function correctly.
+  Make sure to configure the email settings properly for the password reset functionality to work correctly.
 </Note>

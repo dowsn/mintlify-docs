@@ -1,98 +1,149 @@
 ---
-title: 'Backend Controller'
-description: 'Documentation for the Backend controller class'
+title: 'Main'
+description: 'Documentation for the Users controller in a CodeIgniter-based backend system'
 ---
 
 ## Overview
 
-The `Backend` class is a controller in a CodeIgniter-based application. It handles backend functionality and includes various helper methods and libraries for managing user authentication, file operations, and data processing.
+The `Users` class is a controller that extends the `Backend` class. It provides functionality for managing users in the backend system, including both admin users and frontend users. This class includes methods for listing users, resetting passwords, and handling user-related operations.
 
-## Class: Backend
+## Class Definition
 
-Extends `MY_Controller`
-
-### Constructor
-
-The constructor performs the following actions:
-
-- Calls the parent constructor
-- Loads the URL helper
-- Checks if the user is logged in, redirecting to login if not
-- Loads various libraries: zip, form validation, FPDF, FPDI, PHPExcel
-- Initializes user data and BESC CRUD library
-
-<Note>
-  The constructor includes a login check and will redirect unauthenticated users to the login page.
-</Note>
-
-### Properties
-
-<ResponseField name="user" type="object">
-  Stores the current user's data
-</ResponseField>
-
-<ResponseField name="base_url" type="string">
-  Base URL of the application (not explicitly set in the provided code)
-</ResponseField>
-
-<ResponseField name="module_tables" type="array">
-  Array to store module tables (empty in the provided code)
-</ResponseField>
-
-### Methods
-
-#### index()
-
-The main entry point for the Backend controller.
-
-<ResponseField name="Return" type="void">
-  Renders the backend home page with widget data
-</ResponseField>
-
-This method:
-1. Calls `widget_data()` to get widget information
-2. Loads the 'backend/widgets' view with the widget data
-3. Calls the `page()` method to render the 'backend/home' view with the widgets included
-
-### Traits
-
-The class uses the `Helper_Backend` trait, which likely provides additional helper methods for backend operations.
-
-<Warning>
-  The implementation of the `Helper_Backend` trait is not provided in the given code snippet. Refer to the `Helper_Backend.php` file for details on the available helper methods.
-</Warning>
-
-## Dependencies
-
-The Backend controller relies on several external libraries and components:
-
-- CodeIgniter framework
-- MY_Controller (custom controller, likely extending CI_Controller)
-- Authentication_model
-- BESC_crud library
-- FPDF library
-- FPDI library
-- PHPExcel library
-
-## Usage Example
-
-The Backend controller is typically used as the main entry point for authenticated backend operations. Here's a basic example of how it might be used:
-
-<CodeGroup>
-```php Route Configuration
-$route['backend'] = 'backend/index';
+```php
+class Users extends Backend
 ```
 
-```php Controller Usage
-class SomeBackendFeature extends Backend {
-    public function someAction() {
-        // Your backend logic here
-        // You have access to $this->user, BESC_crud, and other initialized components
+## Constructor
+
+The constructor initializes the class and loads the Content_model. It also checks if the current user is an admin, redirecting non-admin users.
+
+<CodeGroup>
+```php
+function __construct()
+{
+    parent::__construct();
+    $this->load->model('entities/Content_model', 'cm');
+    if ($this->user->is_admin != 1) {
+        redirect('');
     }
 }
 ```
 </CodeGroup>
 
+## Methods
+
+### items()
+
+Displays and manages the list of backend users.
+
 <Note>
-  Ensure that all necessary libraries and dependencies are properly installed and configured in your CodeIgniter application for the Backend controller to function correctly.
+This method is only accessible to admin users with superadmin privileges.
 </Note>
+
+Key features:
+- Uses `besc_crud` for CRUD operations
+- Displays user information (username, firstname, lastname, email)
+- Provides a custom button for resetting user passwords
+
+### frontend_user()
+
+Manages the list of frontend users.
+
+Key features:
+- Uses `besc_crud` for CRUD operations
+- Displays user information (username, email, expiry date)
+- Provides a custom button for resetting user passwords
+- Includes a many-to-many relation for user favorites
+
+### reset_view($itemId)
+
+Renders the view for resetting a backend user's password.
+
+<Param name="itemId" type="integer">
+  The ID of the user whose password is being reset
+</Param>
+
+### reset_view_front($itemId)
+
+Renders the view for resetting a frontend user's password.
+
+<Param name="itemId" type="integer">
+  The ID of the frontend user whose password is being reset
+</Param>
+
+### reset_password($itemId)
+
+Resets the password for a backend user and sends an email with the new password.
+
+<Param name="itemId" type="integer">
+  The ID of the user whose password is being reset
+</Param>
+
+### reset_password_front($itemId)
+
+Resets the password for a frontend user and sends an email with the new password.
+
+<Param name="itemId" type="integer">
+  The ID of the frontend user whose password is being reset
+</Param>
+
+### random_str($length, $keyspace)
+
+Generates a random string of specified length.
+
+<Param name="length" type="integer">
+  The length of the random string to generate
+</Param>
+<Param name="keyspace" type="string" default="'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'">
+  The characters to use for generating the random string
+</Param>
+
+### save_item()
+
+Saves modules and gallery items for a specific item.
+
+<Note>
+This method deletes existing modules and gallery items before inserting new ones.
+</Note>
+
+### upload_image()
+
+Handles the upload of an image file.
+
+### upload_pdf()
+
+Handles the upload of a PDF file.
+
+### uploadFile()
+
+Generic method for uploading files.
+
+### sendUserMail($email, $username, $pw, $front)
+
+Sends an email to a user with their new password.
+
+<Param name="email" type="string">
+  The user's email address
+</Param>
+<Param name="username" type="string">
+  The user's username
+</Param>
+<Param name="pw" type="string">
+  The new password
+</Param>
+<Param name="front" type="boolean">
+  Indicates whether the user is a frontend user (true) or backend user (false)
+</Param>
+
+## Security Considerations
+
+<Warning>
+The class includes methods for password reset and file uploads. Ensure proper security measures are in place to prevent unauthorized access and potential vulnerabilities.
+</Warning>
+
+- The class checks for admin privileges in the constructor and some methods
+- Password hashing is used when resetting passwords
+- File upload methods should be carefully reviewed for security implications
+
+=== RESPONSE BREAK ===
+Would you like me to continue with the next section of documentation? Please respond with 'Continue' to proceed.

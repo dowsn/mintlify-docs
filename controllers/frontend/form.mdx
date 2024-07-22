@@ -1,110 +1,108 @@
 ---
-title: Reusable Snippets
-description: Reusable, custom snippets to keep content in sync
-icon: 'recycle'
+title: 'Forms Frontend'
+description: 'A trait for handling form-related functionality in the frontend'
 ---
 
-import SnippetIntro from '/snippets/snippet-intro.mdx';
+This trait, `Forms_Frontend`, provides methods for handling form views, processing form submissions, and sending emails for various form types.
 
-<SnippetIntro />
+## Form View
 
-## Creating a custom snippet
+### `form($type)`
 
-**Pre-condition**: You must create your snippet file in the `snippets` directory.
+Loads and displays a form based on the specified type.
+
+<Param name="type" type="string">
+  The type of form to display.
+</Param>
+
+This method performs the following actions:
+1. Retrieves the item based on the provided pretty URL.
+2. Sets up form data based on the form type.
+3. Loads the appropriate form view.
+
+## Form Processing
+
+### `form_processing()`
+
+Processes form submissions for various form types.
+
+This method handles:
+- Validation of required fields
+- Data insertion into the database
+- Sending confirmation emails
 
 <Note>
-  Any page in the `snippets` directory will be treated as a snippet and will not
-  be rendered into a standalone page. If you want to create a standalone page
-  from the snippet, import the snippet into another file and call it as a
-  component.
+  The specific fields and validation rules depend on the form type specified in the POST data.
 </Note>
 
-### Default export
+## Form Template
 
-1. Add content to your snippet file that you want to re-use across multiple
-   locations. Optionally, you can add variables that can be filled in via props
-   when you import the snippet.
+### `form_template()`
 
-```mdx snippets/my-snippet.mdx
-Hello world! This is my content I want to reuse across pages. My keyword of the
-day is {word}.
-```
+Processes a specific form template, likely for school program bookings.
 
-<Warning>
-  The content that you want to reuse must be inside the `snippets` directory in
-  order for the import to work.
-</Warning>
+This method includes:
+- Validation of form fields
+- Insertion of booking data into the database
+- Sending a 2FA registration email
 
-2. Import the snippet into your destination file.
+## Mailing Functions
 
-```mdx destination-file.mdx
----
-title: My title
-description: My Description
----
+### `sendMailForm($data, $type, $table_name)`
 
-import MySnippet from '/snippets/path/to/my-snippet.mdx';
+Sends a confirmation email for standard forms.
 
-## Header
+<Param name="data" type="array">
+  Form data to be included in the email.
+</Param>
+<Param name="type" type="string">
+  The type of form being processed.
+</Param>
+<Param name="table_name" type="string">
+  The name of the database table associated with the form.
+</Param>
 
-Lorem impsum dolor sit amet.
+### `sendMailRegistration2FA($data)`
 
-<MySnippet word="bananas" />
-```
+Sends a 2FA registration email.
 
-### Reusable variables
+<Param name="data" type="array">
+  Registration data to be included in the email.
+</Param>
 
-1. Export a variable from your snippet file:
+### `sendConfirmationEmail($data, $for_events, $curated)`
 
-```mdx snippets/path/to/custom-variables.mdx
-export const myName = 'my name';
+Sends a confirmation email for gallery-related actions.
 
-export const myObject = { fruit: 'strawberries' };
-```
+<Param name="data" type="array">
+  Data to be included in the email.
+</Param>
+<Param name="for_events" type="boolean">
+  Indicates if the confirmation is for events.
+</Param>
+<Param name="curated" type="boolean">
+  Indicates if the content is curated.
+</Param>
 
-2. Import the snippet from your destination file and use the variable:
+<Note>
+  All email sending functions use PHPMailer for email composition and delivery.
+</Note>
 
-```mdx destination-file.mdx
----
-title: My title
-description: My Description
----
+## Constants
 
-import { myName, myObject } from '/snippets/path/to/custom-variables.mdx';
-
-Hello, my name is {myName} and I like {myObject.fruit}.
-```
-
-### Reusable components
-
-1. Inside your snippet file, create a component that takes in props by exporting
-   your component in the form of an arrow function.
-
-```mdx snippets/custom-component.mdx
-export const MyComponent = ({ title }) => (
-  <div>
-    <h1>{title}</h1>
-    <p>... snippet content ...</p>
-  </div>
-);
-```
+The trait uses several constants for form types, such as `PROGRAMME_SCHOOLS`. These constants are not defined within the provided code snippet but are presumably defined elsewhere in the application.
 
 <Warning>
-  MDX does not compile inside the body of an arrow function. Stick to HTML
-  syntax when you can or use a default export if you need to use MDX.
+  Ensure that all required constants are properly defined before using this trait.
 </Warning>
 
-2. Import the snippet into your destination file and pass in the props
+## Dependencies
 
-```mdx destination-file.mdx
----
-title: My title
-description: My Description
----
+This trait depends on:
+- CodeIgniter's form validation library
+- PHPMailer library
+- Language files for internationalization
 
-import { MyComponent } from '/snippets/custom-component.mdx';
-
-Lorem ipsum dolor sit amet.
-
-<MyComponent title={'Custom title'} />
-```
+<Note>
+  Make sure all dependencies are properly loaded and configured in your CodeIgniter application.
+</Note>

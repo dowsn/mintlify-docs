@@ -1,98 +1,370 @@
 ---
-title: 'Backend Controller'
-description: 'Documentation for the Backend controller class'
+title: 'Main'
+description: 'Controller for handling shop-related functionality'
 ---
 
-## Overview
+The `Shop` class is a controller that manages various shop-related operations, including customer registration, cart management, checkout process, and order processing.
 
-The `Backend` class is a controller in a CodeIgniter-based application. It handles backend functionality and includes various helper methods and libraries for managing user authentication, file operations, and data processing.
+## Class Properties
 
-## Class: Backend
-
-Extends `MY_Controller`
-
-### Constructor
-
-The constructor performs the following actions:
-
-- Calls the parent constructor
-- Loads the URL helper
-- Checks if the user is logged in, redirecting to login if not
-- Loads various libraries: zip, form validation, FPDF, FPDI, PHPExcel
-- Initializes user data and BESC CRUD library
-
-<Note>
-  The constructor includes a login check and will redirect unauthenticated users to the login page.
-</Note>
-
-### Properties
-
-<ResponseField name="user" type="object">
-  Stores the current user's data
+<ResponseField name="shop" type="null">
+Protected property to store shop-related data.
 </ResponseField>
 
-<ResponseField name="base_url" type="string">
-  Base URL of the application (not explicitly set in the provided code)
+<ResponseField name="stripe_secret" type="string">
+Stripe secret key for payment processing.
 </ResponseField>
 
-<ResponseField name="module_tables" type="array">
-  Array to store module tables (empty in the provided code)
+<ResponseField name="stripe_pk" type="string">
+Stripe public key for payment processing.
 </ResponseField>
 
-### Methods
-
-#### index()
-
-The main entry point for the Backend controller.
-
-<ResponseField name="Return" type="void">
-  Renders the backend home page with widget data
+<ResponseField name="bill_prefix" type="string">
+Prefix used for bill identification.
 </ResponseField>
 
-This method:
-1. Calls `widget_data()` to get widget information
-2. Loads the 'backend/widgets' view with the widget data
-3. Calls the `page()` method to render the 'backend/home' view with the widgets included
+<ResponseField name="abei_token" type="string">
+Token for ABEI API authentication.
+</ResponseField>
 
-### Traits
+<ResponseField name="abei_url" type="string">
+URL for ABEI API endpoint.
+</ResponseField>
 
-The class uses the `Helper_Backend` trait, which likely provides additional helper methods for backend operations.
+## Constructor
 
-<Warning>
-  The implementation of the `Helper_Backend` trait is not provided in the given code snippet. Refer to the `Helper_Backend.php` file for details on the available helper methods.
-</Warning>
+The constructor initializes the class, loads necessary models, and sets up important properties.
 
-## Dependencies
+## Methods
 
-The Backend controller relies on several external libraries and components:
+### sendABEI
 
-- CodeIgniter framework
-- MY_Controller (custom controller, likely extending CI_Controller)
-- Authentication_model
-- BESC_crud library
-- FPDF library
-- FPDI library
-- PHPExcel library
+<ParamField path="order_id" type="integer">
+The ID of the order to be sent to ABEI.
+</ParamField>
 
-## Usage Example
+Sends order data to the ABEI API. This method is currently not fully implemented.
 
-The Backend controller is typically used as the main entry point for authenticated backend operations. Here's a basic example of how it might be used:
+### customer_registration
 
-<CodeGroup>
-```php Route Configuration
-$route['backend'] = 'backend/index';
-```
+Loads the customer registration view.
 
-```php Controller Usage
-class SomeBackendFeature extends Backend {
-    public function someAction() {
-        // Your backend logic here
-        // You have access to $this->user, BESC_crud, and other initialized components
-    }
-}
-```
-</CodeGroup>
+### register_customer
 
-<Note>
-  Ensure that all necessary libraries and dependencies are properly installed and configured in your CodeIgniter application for the Backend controller to function correctly.
-</Note>
+Handles the customer registration process.
+
+<ResponseField name="success" type="boolean">
+Indicates whether the registration was successful.
+</ResponseField>
+
+<ResponseField name="msg" type="string">
+Message describing the result of the registration process.
+</ResponseField>
+
+### sendMailCustomerRegistration
+
+<ParamField path="data" type="array">
+Customer registration data.
+</ParamField>
+
+<ParamField path="user_email" type="string">
+Email address of the registered customer.
+</ParamField>
+
+Sends a confirmation email to the newly registered customer.
+
+### confirm_registration
+
+<ParamField path="token" type="string">
+Confirmation token for the registration.
+</ParamField>
+
+Confirms a customer's registration using the provided token.
+
+### customer_login
+
+Handles customer login process.
+
+<ResponseField name="success" type="boolean">
+Indicates whether the login was successful.
+</ResponseField>
+
+<ResponseField name="msg" type="string">
+Message describing the result of the login process.
+</ResponseField>
+
+### customer_logout
+
+Handles customer logout process.
+
+<ResponseField name="success" type="boolean">
+Always returns true upon successful logout.
+</ResponseField>
+
+### removePromoCode
+
+Removes the applied promo code from the current session and cart.
+
+### addPromoCode
+
+<ParamField path="promo_code" type="string">
+The promo code to be applied.
+</ParamField>
+
+Applies a promo code to the current session.
+
+<ResponseField name="success" type="boolean">
+Indicates whether the promo code was successfully applied.
+</ResponseField>
+
+<ResponseField name="msg" type="string">
+Message describing the result of applying the promo code.
+</ResponseField>
+
+### stripeWebhook
+
+Handles Stripe webhook events for payment processing.
+
+### stripeInit
+
+<ParamField path="amount" type="integer">
+The amount to be charged in cents.
+</ParamField>
+
+<ParamField path="order_id" type="integer">
+The ID of the order being processed.
+</ParamField>
+
+<ParamField path="treat_redirect_token" type="string">
+A token for redirecting after payment.
+</ParamField>
+
+Initializes a Stripe Checkout session.
+
+<ResponseField name="url" type="string">
+The URL for the Stripe Checkout session.
+</ResponseField>
+
+### load_view
+
+<ParamField path="view" type="string">
+The name of the view to be loaded.
+</ParamField>
+
+<ParamField path="viewdata" type="array">
+Data to be passed to the view.
+</ParamField>
+
+Loads a view with common data and settings.
+
+### getRandomInteger
+
+<ParamField path="min" type="integer">
+The minimum value of the range.
+</ParamField>
+
+<ParamField path="max" type="integer">
+The maximum value of the range.
+</ParamField>
+
+Generates a random integer within the specified range.
+
+<ResponseField name="integer" type="integer">
+The generated random integer.
+</ResponseField>
+
+### cart_view
+
+Loads the cart view with current cart data and applied promotions.
+
+### checkout
+
+Processes the checkout form submission and initiates the payment process.
+
+### clearCart
+
+Clears the current cart and removes any applied promo code.
+
+### getCartItemCount
+
+<ParamField path="message" type="string" optional>
+Optional message to be included in the response.
+</ParamField>
+
+Returns the current number of items in the cart.
+
+<ResponseField name="success" type="boolean">
+Always returns true.
+</ResponseField>
+
+<ResponseField name="message" type="string">
+The optional message passed to the method.
+</ResponseField>
+
+<ResponseField name="count" type="integer">
+The number of items in the cart.
+</ResponseField>
+
+### getCartTotal
+
+Returns the total value of items in the cart.
+
+<ResponseField name="total" type="string">
+The total value of the cart, formatted as a string with two decimal places.
+</ResponseField>
+
+### removeFromCart
+
+<ParamField path="rowId" type="string">
+The row ID of the item to be removed from the cart.
+</ParamField>
+
+Removes an item from the cart.
+
+<ResponseField name="success" type="boolean">
+Always returns true.
+</ResponseField>
+
+<ResponseField name="rowid" type="string">
+The row ID of the removed item.
+</ResponseField>
+
+<ResponseField name="count" type="integer">
+Always returns 0.
+</ResponseField>
+
+<ResponseField name="total" type="string">
+The new total value of the cart after removal.
+</ResponseField>
+
+### addToCart
+
+Adds an item to the cart.
+
+<ParamField path="sid" type="integer">
+The ID of the product to be added.
+</ParamField>
+
+<ParamField path="qty" type="integer">
+The quantity of the product to be added.
+</ParamField>
+
+<ParamField path="type" type="string">
+The type of the product being added.
+</ParamField>
+
+### updateItemCartQty
+
+Updates the quantity of an item in the cart.
+
+<ParamField path="rowId" type="string">
+The row ID of the item to be updated.
+</ParamField>
+
+<ParamField path="change" type="integer">
+The change in quantity (positive or negative).
+</ParamField>
+
+<ResponseField name="success" type="boolean">
+Always returns true.
+</ResponseField>
+
+<ResponseField name="rowid" type="string">
+The row ID of the updated item.
+</ResponseField>
+
+<ResponseField name="count" type="integer">
+The new quantity of the item.
+</ResponseField>
+
+<ResponseField name="price" type="string">
+The new total price for this item.
+</ResponseField>
+
+<ResponseField name="price_net" type="string">
+The new total net price for this item.
+</ResponseField>
+
+<ResponseField name="price_tax" type="string">
+The new total tax for this item.
+</ResponseField>
+
+<ResponseField name="total" type="string">
+The new total value of the cart.
+</ResponseField>
+
+### success
+
+Handles the successful payment process.
+
+### notification
+
+Handles payment notification process (not used in Stripe integration).
+
+### cancel
+
+Handles cancelled payment process.
+
+### error
+
+Handles payment error process.
+
+### pending
+
+Handles pending payment process.
+
+### shop_response
+
+<ParamField path="msg" type="string">
+The message to be displayed in the response.
+</ParamField>
+
+Loads the shop response view with the given message.
+
+### sendOrderConfirmation
+
+<ParamField path="order_id" type="integer">
+The ID of the order to be confirmed.
+</ParamField>
+
+<ParamField path="amephias_response" type="string">
+The response from Amephias system.
+</ParamField>
+
+<ParamField path="has_ticket" type="boolean">
+Indicates whether the order includes a ticket.
+</ParamField>
+
+Sends an order confirmation email to the shop.
+
+### sendOrderCustomer
+
+<ParamField path="order_id" type="integer">
+The ID of the order to be sent to the customer.
+</ParamField>
+
+Sends an order confirmation email to the customer.
+
+### create_pdf_mail_new
+
+Creates a PDF for a new order.
+
+### create_pdf_mail
+
+Creates a PDF for an order (older version).
+
+### create_pdf_bill
+
+Creates a PDF bill for an order.
+
+### create_pdf_bill_mail
+
+Creates a PDF bill for an order to be sent via email.
+
+### dompdf_test
+
+Generates a test PDF using dompdf library.
+
+### dompdf_test_save_to_file
+
+Generates a test PDF using dompdf library and saves it to a file.

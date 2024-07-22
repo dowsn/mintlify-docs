@@ -1,5 +1,5 @@
 ---
-title: 'Lecker_Content Trait'
+title: 'Lecker_Content'
 description: 'Trait for managing Lecker-specific content and settings in a content management system'
 ---
 
@@ -46,29 +46,3 @@ The trait includes several utility methods for preparing select data, getting ta
 - Integration with Google Analytics
 - Color management for UI elements
 - Dynamic table selection for dashboard widgets
-
-## Usage Notes
-
-- This trait is designed to be used within a class that has access to CodeIgniter's features and a custom CRUD library (`besc_crud`).
-- It assumes the existence of several model methods (e.g., `$this->getSelector()`, `$this->getPrettyName()`).
-- The trait uses a custom approach to gather available tables by extracting method names from other traits.
-
-<Note>
-The trait uses several properties and methods that should be defined in the class using this trait, such as `$this->user`, `$this->GA_Analytics_Cities()`, etc.
-</Note>
-
-<Warning>
-- The Google Analytics integration assumes the existence of a configured Google Analytics setup and appropriate credentials.
-- Direct database operations are used in some methods. Implement proper input validation and error handling in production environments.
-- The trait contains commented-out methods (`lecker_areas()`, `lecker_menus()`, `lecker_submenus()`) which might be intended for future use or represent deprecated functionality.
-</Warning>
-
-## Customization
-
-To use this trait effectively:
-1. Include it in your content management class.
-2. Ensure all required properties, methods, and libraries are available in the using class or its parent classes.
-3. Configure Google Analytics integration if using the `google_analytics()` method.
-4. Adjust the CRUD configurations (columns, filters, etc.) to match your specific requirements for settings and widgets.
-5. Consider implementing or modifying the commented-out methods if additional functionality is needed.
-6. Ensure proper security measures are in place, especially for admin-only accessible methods.

@@ -1,59 +1,178 @@
 ---
-title: 'Images and Embeds'
-description: 'Add image, video, and other HTML elements'
-icon: 'image'
+title: 'Helper_Frontend'
+description: 'A trait containing various helper functions for frontend operations'
 ---
 
-<img
-  style={{ borderRadius: '0.5rem' }}
-  src="https://mintlify-assets.b-cdn.net/bigbend.jpg"
-/>
+## Event Visibility
 
-## Image
+### getVisibleEvent
 
-### Using Markdown
+Determines if an event should be visible based on its visibility settings.
 
-The [markdown syntax](https://www.markdownguide.org/basic-syntax/#images) lets you add images using the following code
+<ParamField path="event" type="object">
+  The event object to check visibility for
+</ParamField>
 
-```md
-![title](/path/image.jpg)
-```
+<ResponseField name="return" type="object|false">
+  Returns the event object if visible, false otherwise
+</ResponseField>
 
-Note that the image file size must be less than 5MB. Otherwise, we recommend hosting on a service like [Cloudinary](https://cloudinary.com/) or [S3](https://aws.amazon.com/s3/). You can then use that URL and embed.
+## Google Analytics
 
-### Using Embeds
+### googleAnalytics
 
-To get more customizability with images, you can also use [embeds](/writing-content/embed) to add images
+Sends pageview data to Google Analytics.
 
-```html
-<img height="200" src="/path/image.jpg" />
-```
+<ParamField path="analytics" type="object">
+  The Google Analytics service object
+</ParamField>
 
-## Embeds and HTML elements
+### getResults
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/4KzFe50RQkQ"
-  title="YouTube video player"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-  style={{ width: '100%', borderRadius: '0.5rem' }}
-></iframe>
+Retrieves session data from Google Analytics for the last 7 days.
 
-<br />
+<ParamField path="analytics" type="object">
+  The Google Analytics service object
+</ParamField>
 
-<Tip>
+<ParamField path="profileId" type="string">
+  The Google Analytics profile ID
+</ParamField>
 
-Mintlify supports [HTML tags in Markdown](https://www.markdownguide.org/basic-syntax/#html). This is helpful if you prefer HTML tags to Markdown syntax, and lets you create documentation with infinite flexibility.
+### printResults
 
-</Tip>
+Prints the results from a Google Analytics query.
 
-### iFrames
+<ParamField path="results" type="object">
+  The results object from a Google Analytics query
+</ParamField>
 
-Loads another HTML page within the document. Most commonly used for embedding videos.
+## Event Management
 
-```html
-<iframe src="https://www.youtube.com/embed/4KzFe50RQkQ"> </iframe>
-```
+### get_events_with_js_return
+
+Retrieves events for a specific date and returns them as JSON.
+
+<ResponseField name="return" type="json">
+  JSON object containing the formatted date and event items
+</ResponseField>
+
+## Filtering
+
+### js_filter
+
+Prepares data for JavaScript-based filtering of webinars.
+
+### get_filter
+
+Prepares data for filtering artworks.
+
+### get_filters_for
+
+Generates filter options for different types of items (case studies, projects, news, shop).
+
+<ParamField path="type" type="string">
+  The type of items to generate filters for
+</ParamField>
+
+<ParamField path="items" type="array">
+  The array of items to generate filters from
+</ParamField>
+
+<ResponseField name="return" type="array">
+  An array of filter options
+</ResponseField>
+
+## Image Handling
+
+### getArtworkZoom
+
+Retrieves zoom images for an artwork.
+
+### upload_image
+
+Handles image upload and resizing.
+
+### replace_img
+
+Replaces an existing image.
+
+## Cookie Management
+
+### set_cookie
+
+Sets a cookie with the given name and value.
+
+<ParamField path="name" type="string">
+  The name of the cookie
+</ParamField>
+
+<ParamField path="val" type="string">
+  The value to set for the cookie
+</ParamField>
+
+### saveCookie
+
+Saves cookie preferences.
+
+## Email
+
+### send_internal_email
+
+Sends an internal email using PHPMailer.
+
+<ParamField path="data" type="array">
+  The data to be used in the email template
+</ParamField>
+
+<ResponseField name="return" type="string">
+  Returns 'ok' on success, or an error message on failure
+</ResponseField>
+
+## Mailchimp Integration
+
+### add_to_mailchimp
+
+Adds an email address to a Mailchimp list.
+
+### addToMailchimp
+
+Adds a subscriber to a Mailchimp list with additional details.
+
+<ParamField path="email" type="string">
+  The subscriber's email address
+</ParamField>
+
+<ParamField path="firstname" type="string">
+  The subscriber's first name
+</ParamField>
+
+<ParamField path="lastname" type="string">
+  The subscriber's last name
+</ParamField>
+
+## Search Functionality
+
+### getResultSearchString
+
+Extracts and formats a snippet of text around a search term.
+
+<ParamField path="item" type="object">
+  The item containing the content to search
+</ParamField>
+
+<ParamField path="search_term" type="string">
+  The term to search for
+</ParamField>
+
+<ResponseField name="return" type="string">
+  A formatted string containing the search term and surrounding context
+</ResponseField>
+
+### search_save
+
+Saves a search term, updating its count if it already exists.
+
+<ParamField path="tag_id" type="int|false" default="false">
+  Optional tag ID associated with the search
+</ParamField>

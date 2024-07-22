@@ -1,98 +1,190 @@
 ---
-title: 'Backend Controller'
-description: 'Documentation for the Backend controller class'
+title: 'MY_Controller_Lingual'
+description: 'A trait containing utility functions for linguistic manipulations and formatting'
 ---
 
-## Overview
+This trait provides various utility functions for manipulating strings, handling pluralization, formatting dates, and managing language settings.
 
-The `Backend` class is a controller in a CodeIgniter-based application. It handles backend functionality and includes various helper methods and libraries for managing user authentication, file operations, and data processing.
+## String Manipulation
 
-## Class: Backend
+### getPrettyName
 
-Extends `MY_Controller`
-
-### Constructor
-
-The constructor performs the following actions:
-
-- Calls the parent constructor
-- Loads the URL helper
-- Checks if the user is logged in, redirecting to login if not
-- Loads various libraries: zip, form validation, FPDF, FPDI, PHPExcel
-- Initializes user data and BESC CRUD library
-
-<Note>
-  The constructor includes a login check and will redirect unauthenticated users to the login page.
-</Note>
-
-### Properties
-
-<ResponseField name="user" type="object">
-  Stores the current user's data
-</ResponseField>
-
-<ResponseField name="base_url" type="string">
-  Base URL of the application (not explicitly set in the provided code)
-</ResponseField>
-
-<ResponseField name="module_tables" type="array">
-  Array to store module tables (empty in the provided code)
-</ResponseField>
-
-### Methods
-
-#### index()
-
-The main entry point for the Backend controller.
-
-<ResponseField name="Return" type="void">
-  Renders the backend home page with widget data
-</ResponseField>
-
-This method:
-1. Calls `widget_data()` to get widget information
-2. Loads the 'backend/widgets' view with the widget data
-3. Calls the `page()` method to render the 'backend/home' view with the widgets included
-
-### Traits
-
-The class uses the `Helper_Backend` trait, which likely provides additional helper methods for backend operations.
-
-<Warning>
-  The implementation of the `Helper_Backend` trait is not provided in the given code snippet. Refer to the `Helper_Backend.php` file for details on the available helper methods.
-</Warning>
-
-## Dependencies
-
-The Backend controller relies on several external libraries and components:
-
-- CodeIgniter framework
-- MY_Controller (custom controller, likely extending CI_Controller)
-- Authentication_model
-- BESC_crud library
-- FPDF library
-- FPDI library
-- PHPExcel library
-
-## Usage Example
-
-The Backend controller is typically used as the main entry point for authenticated backend operations. Here's a basic example of how it might be used:
+Converts a table name to a more readable format.
 
 <CodeGroup>
-```php Route Configuration
-$route['backend'] = 'backend/index';
+
+```php
+public static function getPrettyName($name)
 ```
 
-```php Controller Usage
-class SomeBackendFeature extends Backend {
-    public function someAction() {
-        // Your backend logic here
-        // You have access to $this->user, BESC_crud, and other initialized components
-    }
-}
-```
 </CodeGroup>
 
+<Param name="name" type="string">
+  The table name to be converted
+</Param>
+
+Returns a string with the first letter capitalized and underscores replaced by spaces.
+
+### getPrettyNameInAllCaps
+
+Converts a table name to an all-uppercase format.
+
+<CodeGroup>
+
+```php
+public function getPrettyNameInAllCaps($name)
+```
+
+</CodeGroup>
+
+<Param name="name" type="string">
+  The table name to be converted
+</Param>
+
+Returns a string with all letters in uppercase and underscores replaced by spaces.
+
+### singularizeName
+
+Converts a plural name to its singular form.
+
+<CodeGroup>
+
+```php
+public function singularizeName($name)
+```
+
+</CodeGroup>
+
+<Param name="name" type="string">
+  The plural name to be singularized
+</Param>
+
+Returns the singular form of the given name, with exceptions for irregular nouns.
+
+### pluralizeName
+
+Converts a singular name to its plural form.
+
+<CodeGroup>
+
+```php
+public static function pluralizeName($name)
+```
+
+</CodeGroup>
+
+<Param name="name" type="string">
+  The singular name to be pluralized
+</Param>
+
+Returns the plural form of the given name, with exceptions for irregular nouns.
+
+### nullToString
+
+Converts null or undefined values to an empty string.
+
+<CodeGroup>
+
+```php
+public function nullToString($value)
+```
+
+</CodeGroup>
+
+<Param name="value" type="mixed">
+  The value to be checked and converted if necessary
+</Param>
+
+Returns an empty string if the input is null, undefined, or an empty value; otherwise, returns the input value.
+
+### remove_accents
+
+Removes accents from a string.
+
+<CodeGroup>
+
+```php
+function remove_accents($string)
+```
+
+</CodeGroup>
+
+<Param name="string" type="string">
+  The string from which to remove accents
+</Param>
+
+Returns the input string with accented characters replaced by their non-accented equivalents.
+
+## Data Formatting
+
+### getSelector
+
+Generates an array for use in select dropdowns.
+
+<CodeGroup>
+
+```php
+public function getSelector($table_name, $main_value = 'name', $value_in_brackets = false, $defaultValue = 'select')
+```
+
+</CodeGroup>
+
+<Param name="table_name" type="string">
+  The name of the table to fetch data from
+</Param>
+
+<Param name="main_value" type="string" default="name">
+  The field to use as the main value in the dropdown
+</Param>
+
+<Param name="value_in_brackets" type="string|false" default="false">
+  An optional field to display in brackets after the main value
+</Param>
+
+<Param name="defaultValue" type="string" default="select">
+  The type of default value to include ('select', 'all', or none)
+</Param>
+
+Returns an array of key-value pairs suitable for use in a dropdown selector.
+
+### dateFormatter
+
+Formats a date string according to the specified format and locale.
+
+<CodeGroup>
+
+```php
+public function dateFormatter($date, $format)
+```
+
+</CodeGroup>
+
+<Param name="date" type="string">
+  The date string to be formatted
+</Param>
+
+<Param name="format" type="string">
+  The desired output format
+</Param>
+
+Returns the formatted date string based on the current language setting.
+
+## Language Management
+
+### _setLang
+
+Sets the language for the application based on a cookie value.
+
+<CodeGroup>
+
+```php
+protected function _setLang()
+```
+
+</CodeGroup>
+
+This method checks for a language cookie and sets the application language accordingly. It also loads the appropriate language file and sets the locale.
+
 <Note>
-  Ensure that all necessary libraries and dependencies are properly installed and configured in your CodeIgniter application for the Backend controller to function correctly.
+This method is protected and intended to be used internally within the class.
 </Note>
