@@ -51,7 +51,7 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "installation", "quickstart", "contributing", "license"]
+      "pages": ["introduction", "installation", "quickstart", "license"]
     },
     {
       "group": "MY Controller",
