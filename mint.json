@@ -32,20 +32,40 @@
     }
   ],
   "anchors": [
+     {
+      "name": "lecker",
+      "icon": "lollipop",
+      "url": "https://treat.agency/"
+    },
+     {
+      "name": "github",
+      "icon": "github",
+      "url": "https://treat.agency/"
+    },
     {
       "name": "treat agency",
-      "icon": "book-open-cover",
+      "icon": "link",
       "url": "https://treat.agency/"
     }
   ],
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "quickstart"]
+      "pages": ["introduction", "installation", "quickstart", "contributing", "license"]
     },
     {
-      "group": "Backend Controller",
-      "pages": ["controllers/backend/main", "controllers/backend/helper"]
+      "group": "MY Controller",
+      "pages": [
+        "controllers/content/main",
+        "controllers/my_controller/data",
+        "controllers/my_controller/debug",
+        "controllers/my_controller/lingual",
+        "controllers/my_controller/modules"
+      ]
+    },
+    {
+      "group": "Lecker Controller",
+      "pages": ["controllers/lecker/main"]
     },
     {
       "group": "Content Controller",
@@ -80,19 +100,10 @@
       ]
     },
     {
-      "group": "MY Controller",
-      "pages": [
-        "controllers/content/main",
-        "controllers/my_controller/data",
-        "controllers/my_controller/debug",
-        "controllers/my_controller/lingual",
-        "controllers/my_controller/modules"
-      ]
+      "group": "Backend Controller",
+      "pages": ["controllers/backend/main", "controllers/backend/helper"]
     },
-    {
-      "group": "Lecker Controller",
-      "pages": ["controllers/lecker/main"]
-    },
+
     {
       "group": "Repository Controller",
       "pages": ["controllers/repository/main"]

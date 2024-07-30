@@ -1,0 +1,278 @@
+---
+title: 'Introduction'
+description: 'Backend controller for managing image repository functionalities'
+---
+
+## Overview
+
+The `Repository` class extends the `Backend` class and provides functionality for managing an image repository, including categories, tags, and image items. It includes methods for saving, customizing, and uploading images, as well as managing related metadata.
+
+## Constructor
+
+<CodeGroup>
+
+```php
+public function __construct()
+```
+
+</CodeGroup>
+
+Initializes the Repository class, loads the Content_model, and checks for admin privileges.
+
+<Note>
+If the user is not an admin, they will be redirected to the home page.
+</Note>
+
+## Methods
+
+### saveOneImage
+
+<CodeGroup>
+
+```php
+public function saveOneImage()
+```
+
+</CodeGroup>
+
+Updates the metadata for a single image in the repository.
+
+<Param name="image_title_en" type="string">
+  The English title of the image
+</Param>
+
+<Param name="image_title" type="string">
+  The default title of the image
+</Param>
+
+<Param name="image_credits_text" type="string">
+  The credits text for the image
+</Param>
+
+<Param name="image_credits_text_en" type="string">
+  The English credits text for the image
+</Param>
+
+<Param name="image_id" type="int">
+  The ID of the image to update
+</Param>
+
+Returns a JSON response with the updated image data.
+
+### categories
+
+<CodeGroup>
+
+```php
+public function categories()
+```
+
+</CodeGroup>
+
+Displays and manages image categories using a CRUD interface.
+
+### tags
+
+<CodeGroup>
+
+```php
+public function tags()
+```
+
+</CodeGroup>
+
+Displays and manages image tags using a CRUD interface.
+
+### items
+
+<CodeGroup>
+
+```php
+public function items()
+```
+
+</CodeGroup>
+
+Displays and manages repository items (images) using a CRUD interface. This method sets up various fields for image metadata and relationships.
+
+### customizeImage
+
+<CodeGroup>
+
+```php
+public function customizeImage()
+```
+
+</CodeGroup>
+
+Customizes an image's metadata and relationships based on POST data.
+
+<Param name="id" type="int">
+  The ID of the image to customize
+</Param>
+
+<Param name="image_delete" type="string">
+  If set to 'on', the image will be deleted
+</Param>
+
+<Param name="image_public" type="string">
+  If set to 'on', the image will be made public
+</Param>
+
+<Param name="image_tag" type="int">
+  The ID of the tag to add to the image
+</Param>
+
+<Param name="image_tag_remove" type="int">
+  The ID of the tag to remove from the image
+</Param>
+
+### saveImage
+
+<CodeGroup>
+
+```php
+public function saveImage()
+```
+
+</CodeGroup>
+
+Saves a new image to the repository with associated metadata.
+
+<Param name="image_title_en" type="string">
+  The English title of the image
+</Param>
+
+<Param name="image_title" type="string">
+  The default title of the image
+</Param>
+
+<Param name="image_public" type="string">
+  Whether the image should be public ('on' or '1' for true)
+</Param>
+
+<Param name="image_tag" type="int">
+  The ID of the tag to associate with the image
+</Param>
+
+<Param name="repo_fname" type="string">
+  The filename of the image
+</Param>
+
+<Param name="image_category" type="int">
+  The ID of the category to associate with the image
+</Param>
+
+<Param name="image_alt_text" type="string">
+  The alt text for the image
+</Param>
+
+<Param name="image_alt_text_en" type="string">
+  The English alt text for the image
+</Param>
+
+<Param name="image_credits_text" type="string">
+  The credits text for the image
+</Param>
+
+<Param name="image_credits_text_en" type="string">
+  The English credits text for the image
+</Param>
+
+Returns a JSON response with the newly created image data.
+
+### upload_image
+
+<CodeGroup>
+
+```php
+public function upload_image()
+```
+
+</CodeGroup>
+
+Handles the upload of an image file, creates thumbnails, and returns metadata.
+
+<Param name="filename" type="string">
+  The original filename of the uploaded image
+</Param>
+
+<Param name="uploadpath" type="string">
+  The path where the image should be uploaded
+</Param>
+
+<Param name="file_size" type="int">
+  The size of the uploaded file
+</Param>
+
+Returns a JSON response with the upload results, including file paths and image dimensions.
+
+### crop_image
+
+<CodeGroup>
+
+```php
+public function crop_image()
+```
+
+</CodeGroup>
+
+Crops an existing image based on provided coordinates and saves it as a new image in the repository.
+
+<Param name="type" type="string">
+  The type of the image
+</Param>
+
+<Param name="collection" type="string">
+  The collection the image belongs to
+</Param>
+
+<Param name="title" type="string">
+  The title of the new cropped image
+</Param>
+
+<Param name="alt" type="string">
+  The alt text for the cropped image
+</Param>
+
+<Param name="alt_en" type="string">
+  The English alt text for the cropped image
+</Param>
+
+<Param name="category" type="int">
+  The category ID for the cropped image
+</Param>
+
+<Param name="tag" type="int">
+  The tag ID for the cropped image
+</Param>
+
+<Param name="fname" type="string">
+  The filename of the original image to crop
+</Param>
+
+<Param name="x1" type="int">
+  The x-coordinate of the top-left corner of the crop area
+</Param>
+
+<Param name="y1" type="int">
+  The y-coordinate of the top-left corner of the crop area
+</Param>
+
+<Param name="x2" type="int">
+  The x-coordinate of the bottom-right corner of the crop area
+</Param>
+
+<Param name="y2" type="int">
+  The y-coordinate of the bottom-right corner of the crop area
+</Param>
+
+<Param name="w" type="int">
+  The width of the crop area (default: 278)
+</Param>
+
+<Param name="h" type="int">
+  The height of the crop area (default: 200)
+</Param>
+
+Returns a JSON response with the cropped image data, including file paths.

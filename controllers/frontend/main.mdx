@@ -1,0 +1,76 @@
+---
+title: 'Frontend Controller'
+description: 'Main controller for the frontend functionality'
+---
+
+## Overview
+
+The `Frontend` class is the main controller for handling frontend functionality in the application. It extends the `MY_Controller` class and incorporates various traits to organize and modularize its functionality.
+
+## Class Definition
+
+```php
+class Frontend extends MY_Controller
+```
+
+## Constructor
+
+The constructor initializes the controller and sets up necessary components.
+
+```php
+function __construct()
+```
+
+### Actions performed in the constructor:
+
+1. Calls the parent constructor
+2. Detects the user's device
+3. Loads the `besc_helper` helper
+4. Loads the `form_validation` library
+5. Loads the Braintree PHP library (version 5.0.0)
+6. Loads the `cookie` helper
+7. Includes the FPDF library
+8. Includes the FPDI library
+9. Includes the PasswordHash library
+
+## Included Traits
+
+The `Frontend` class uses the following traits to organize its functionality:
+
+- `Helper_Frontend`
+- `Pages_Frontend`
+- `Detail_Load_Frontend`
+- `Data_Frontend`
+- `Format_Frontend`
+- `Forms_Frontend`
+- `User_Frontend`
+- `Language_Frontend`
+
+## Included Files
+
+The following files are included at the beginning of the class:
+
+1. `Helper_Frontend.php`
+2. `Pages_Frontend.php`
+3. `User_Frontend.php`
+4. `Detail_Load_Frontend.php`
+5. `Data_Frontend.php`
+6. `Format_Frontend.php`
+7. `Forms_Frontend.php`
+8. `Language_Frontend.php`
+
+These files are located in the `APPPATH . 'controllers/FRONTEND/'` directory.
+
+<Note>
+The code includes a commented-out line for setting the `GOOGLE_APPLICATION_CREDENTIALS` environment variable. This suggests that Google Cloud services might be used in the application, but the line is currently inactive.
+</Note>
+
+## Security
+
+The file begins with a security check to prevent direct script access:
+
+```php
+defined('BASEPATH') or exit('No direct script access allowed');
+```
+
+This ensures that the script can only be accessed through the proper CodeIgniter application flow.
