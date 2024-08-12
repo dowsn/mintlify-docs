@@ -1,86 +1,234 @@
 ---
 title: 'Quickstart'
-description: 'Start building awesome documentation in under 5 minutes'
+description: ''
 ---
 
-## Setup your development
+# Introduction to Lecker CMS
 
-Learn how to update your docs locally and and deploy them to the public.
+Lecker is a custom-made Content Management System (CMS) based on CodeIgniter 3, written in PHP 8.2. It uses Composer for installing additional libraries.
 
-### Edit and preview
+## Table of Contents
 
-<AccordionGroup>
-  <Accordion icon="github" title="Clone your docs locally">
-    During the onboarding process, we created a repository on your Github with
-    your docs content. You can find this repository on our
-    [dashboard](https://dashboard.mintlify.com). To clone the repository
-    locally, follow these
-    [instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-    in your terminal.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Preview changes">
-    Previewing helps you make sure your changes look as intended. We built a
-    command line interface to render these changes locally. 1. Install the
-    [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the
-    documentation changes locally with this command: ``` npm i -g mintlify ```
-    2. Run the following command at the root of your documentation (where
-    `mint.json` is): ``` mintlify dev ```
-  </Accordion>
-</AccordionGroup>
+- [Project Structure](#project-structure)
+- [Core Components](#core-components)
+- [Lecker CMS UI](#lecker-cms-ui)
+- [Important Tables and Terms](#important-tables-and-terms)
+- [Libraries](#libraries)
+- [Modules](#modules)
+- [Security Best Practices](#security-best-practices)
 
-### Deploy your changes
+## Project Structure
 
-<AccordionGroup>
+The Lecker project follows a specific file structure:
 
-<Accordion icon="message-bot" title="Install our Github app">
-  Our Github app automatically deploys your changes to your docs site, so you
-  don't need to manage deployments yourself. You can find the link to install on
-  your [dashboard](https://dashboard.mintlify.com). Once the bot has been
-  successfully installed, there should be a check mark next to the commit hash
-  of the repo.
-</Accordion>
-<Accordion icon="rocket" title="Push your changes">
-  [Commit and push your changes to
-  Git](https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository#about-git-push)
-  for your changes to update in your docs site. If you push and don't see that
-  the Github app successfully deployed your changes, you can also manually
-  update your docs through our [dashboard](https://dashboard.mintlify.com).
-</Accordion>
+- `application/`
+  - `config/` - Database connection, base URL, constants, routes, autoload, etc.
+  - `controllers/` - Main project functions for frontend, backend, content management, etc.
+  - `core/` - Contains MY_Controller with shared functions
+  - `helpers/` - Contains besc_helper for simple helper functions
+  - `language/` - Contains language lines accessed via `$this->lang->line('your_line_key')`
+  - `libraries/` - Project libraries and Lecker_crud
+  - `models/` - Models named by the controller where they are used
+  - `views/` - HTML views for frontend, mail, authentication, shop, etc.
+- `assets/` - Fixed assets shared between projects
+- `system/` - Core CodeIgniter libraries and PHP files, including Model.php
+- `items/` - Project-specific assets (JavaScript, CSS, images, uploads)
+- `vendor/` - Composer and third-party libraries
+- `composer.json` & `composer.lock` - List of installed libraries
+- `index.php` - Application entry point (switch to production environment for live sites)
+- `.htaccess`
 
-</AccordionGroup>
+## Core Components
 
-## Update your docs
+### Controllers
 
-Add content directly in your files with MDX syntax and React components. You can use any of our components, or even build your own.
+1. Backend & Repository Controller
+   - Basic backend functions
+   - Repository management (overviews, teaser image selectors)
 
-<CardGroup>
+2. Content Controller
+   - Setup of editable tables in CMS
+   - Content Helper for displaying buttons and data
+   - Module saving, cloning, and display
+   - Error logging
 
-<Card title="Style Your Docs" icon="paintbrush" href="/settings/global">
-  Add flair to your docs with personalized branding.
-</Card>
+3. Shop Controller
+   - Checkout and payment processing functions
 
-<Card
-  title="Add API Endpoints"
-  icon="square-code"
-  href="/api-playground/configuration"
->
-  Implement your OpenAPI spec and enable API user interaction.
-</Card>
+4. Authentication & User Controller
+   - Backend and frontend login
+   - Password reset
 
-<Card
-  title="Integrate Analytics"
-  icon="chart-mixed"
-  href="/analytics/supported-integrations"
->
-  Draw insights from user interactions with your documentation.
-</Card>
+5. Frontend Controller
+   - Public-facing views
+   - Data preparation
 
-<Card
-  title="Host on a Custom Domain"
-  icon="browser"
-  href="/settings/custom-domain/subdomain"
->
-  Keep your docs on your own website's subdomain.
-</Card>
+6. Lecker Controller
+   - Core of the CRUD system
+   - Functions for rendering tables, editing, filtering, and image upload
 
-</CardGroup>
+7. MY_Controller
+   - Universal functions used throughout the app
+   - Image preparation for modules
+   - Naming functions
+   - Error logging functions
+
+### Models
+
+Models specify database queries for CRUD operations using CodeIgniter syntax. The `Model.php` in the system folder defines universal model functions that can be used anywhere.
+
+## Lecker CMS UI
+
+The Content Management System is accessible via the Backend at `/backend`. Key features include:
+
+- Dashboard with editable tables
+- Menu divided into groups:
+  - Normal project user: Content, General, Repositories
+  - Projects with shop: additional Shop category
+  - Developers: additional Dev Area category
+- Settings for user data and dashboard customization
+
+<Note>
+Login requires a backend_user with admin set to 1 to access and edit tables.
+</Note>
+
+## Important Tables and Terms
+
+1. Entity
+   - Middle point to connect with teaser images and items
+   - First image taken as main, can be reordered
+   - Define table columns and relationships
+   - Uses entity_teaser_relation
+   - Types:
+     - Article Entity: represented by a page with dynamic modules
+     - Noarticle Entity: exist independently, without articles or modules
+   - Must be specified in constants for ID generation
+
+2. Article (table items)
+   - Subordinate to Entity
+   - Contains modules and language-specific content
+   - Defined via pretty URL
+   - Four visibility options:
+     - Visible
+     - Only with direct link
+     - Logged in only
+     - Hidden
+   - Can be associated with multiple modules (text, image, gallery)
+   - Supports multiple languages (specify in constants)
+   - Can link original article with secondary language articles
+
+3. Image Repository
+   - Central storage for images and photos
+   - Connect to entities as teaser images, modules, or noarticle entities
+   - Public/private settings (private images blurred in backend)
+   - Saved in three versions using Imagick library:
+     - Frontend image
+     - Full size
+     - Thumbnail
+
+4. Tags
+   - General (associated with any Article Entity)
+   - Specific to certain Noarticle or Article entity types
+   - Default tag connected with Normal Article entity
+
+5. File Repository
+   - For saving various file types (mainly smaller PDF files or ZIP packages)
+   - Used in articles via download module
+
+6. User Table
+   - Accessible only to superadmin
+   - For creating and managing user accounts and permissions
+
+7. Dev Area
+   - Not visible for non-dev backend users
+   - Contains error logs, article overview, debugging tables, and stats
+   - Automatic error logging using MY_Controller functions
+
+## Libraries
+
+Lecker includes several libraries:
+
+- OpenAI library
+- PDF creator
+- Shopping functions
+- Picture creation
+- CKEditor for text editing
+- PHPMailer
+
+## Modules
+
+Modules for articles are specified in three main areas:
+
+1. Content Controller
+   - Types of modules and their columns
+
+2. crud.php
+   - Preview of modules in backend
+   - Module editor
+   - Icons
+
+3. Frontend
+   - Detail function to collect article-specific modules and content
+
+4. JavaScript files
+   - edit.js in items/backend
+   - Module-specific JavaScript files
+   - Specifies transfer of information between module editor and preview
+
+## Security Best Practices
+
+1. Keep the CMS and plugins up to date
+2. Implement basic security measures
+3. Use secrets management:
+   - Create a `.env` file in the root directory
+   - Access secrets using `$_ENV['SECRET_NAME']`
+   - Use phpdotenv library
+
+### Default .env Template
+
+```
+STATUS="development"
+
+# SITE
+SITE_URL_DEV=""
+SITE_URL_TEST=""
+SITE_URL_STAGE=""
+SITE_URL_PROD=""
+
+# DB
+DB_HOST_DEV=""
+DB_NAME_DEV=""
+DB_USER_DEV=""
+DB_PWD_DEV=""
+
+DB_HOST_TEST=""
+DB_NAME_TEST=""
+DB_USER_TEST=""
+DB_PWD_TEST=""
+
+DB_HOST_STAGE=""
+DB_NAME_STAGE=""
+DB_USER_STAGE=""
+DB_PWD_STAGE=""
+
+DB_HOST_PROD=""
+DB_NAME_PROD=""
+DB_USER_PROD=""
+DB_PWD_PROD=""
+
+# SMTP – the client mailer
+SMTP_HOST_TEST=""
+SMTP_PORT_TEST=""
+SMTP_USER_TEST=""
+SMTP_PWD_TEST=""
+
+SMTP_HOST_PROD=""
+SMTP_PORT_PROD=""
+SMTP_USER_PROD=""
+SMTP_PWD_PROD=""
+
+# API
+API_KEY_1=""
+API_KEY_2=""
+API_KEY_3=""
+```
