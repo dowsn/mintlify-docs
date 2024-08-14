@@ -5,8 +5,6 @@ description: ''
 
 # Introduction to Lecker CMS
 
-Lecker is a custom-made Content Management System (CMS) based on CodeIgniter 3, written in PHP 8.2. It uses Composer for installing additional libraries.
-
 ## Table of Contents
 
 - [Project Structure](#project-structure)
@@ -29,7 +27,7 @@ The Lecker project follows a specific file structure:
   - `language/` - Contains language lines accessed via `$this->lang->line('your_line_key')`
   - `libraries/` - Project libraries and Lecker_crud
   - `models/` - Models named by the controller where they are used
-  - `views/` - HTML views for frontend, mail, authentication, shop, etc.
+  - `views/` - HTML views for frontend, mail, authentication etc.
 - `assets/` - Fixed assets shared between projects
 - `system/` - Core CodeIgniter libraries and PHP files, including Model.php
 - `items/` - Project-specific assets (JavaScript, CSS, images, uploads)
@@ -52,22 +50,19 @@ The Lecker project follows a specific file structure:
    - Module saving, cloning, and display
    - Error logging
 
-3. Shop Controller
-   - Checkout and payment processing functions
-
-4. Authentication & User Controller
+3. Authentication & User Controller
    - Backend and frontend login
    - Password reset
 
-5. Frontend Controller
+4. Frontend Controller
    - Public-facing views
    - Data preparation
 
-6. Lecker Controller
+5. Lecker Controller
    - Core of the CRUD system
    - Functions for rendering tables, editing, filtering, and image upload
 
-7. MY_Controller
+6. MY_Controller
    - Universal functions used throughout the app
    - Image preparation for modules
    - Naming functions
@@ -79,7 +74,7 @@ Models specify database queries for CRUD operations using CodeIgniter syntax. Th
 
 ## Lecker CMS UI
 
-The Content Management System is accessible via the Backend at `/backend`. Key features include:
+The Content Management System is accessible via the Backend at `/backend` (default setting editable in routes.php). Key features include:
 
 - Dashboard with editable tables
 - Menu divided into groups:
@@ -121,7 +116,7 @@ Login requires a backend_user with admin set to 1 to access and edit tables.
    - Central storage for images and photos
    - Connect to entities as teaser images, modules, or noarticle entities
    - Public/private settings (private images blurred in backend)
-   - Saved in three versions using Imagick library:
+   - Resized and saved by default in three versions using Imagick library:
      - Frontend image
      - Full size
      - Thumbnail
@@ -148,7 +143,6 @@ Login requires a backend_user with admin set to 1 to access and edit tables.
 
 Lecker includes several libraries:
 
-- OpenAI library
 - PDF creator
 - Shopping functions
 - Picture creation
@@ -167,7 +161,7 @@ Modules for articles are specified in three main areas:
    - Module editor
    - Icons
 
-3. Frontend
+3. Frontend Controller
    - Detail function to collect article-specific modules and content
 
 4. JavaScript files
