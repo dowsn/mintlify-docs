@@ -1,30 +1,84 @@
-Setting up new project
+---
+title: 'Installation'
+description: 'A guide to initialize and configure your new project'
+---
 
-empty tables, create backend_user
+## Initial Setup
 
-define modules
+1. Copy the tables from the SQL file (included in the project zip) and create your backend user.
+2. Check parts of your code that are marked with the comment `//leckerstart` to set your basic configuration.
+3. Create a `.env` file using the template provided below.
 
-start creating views
+## Environment Configuration
 
-adjust detail pages how they should look probably every project different
+Create a `.env` file in your project root directory using the following template:
 
-prepare content table, delete unneeded, add columns and tables in phpmyadmin
+```env
+STATUS="development"
 
-search for // treatstart comment to set db and other general settings
+# SITE
+SITE_URL_DEV=""
+SITE_URL_TEST=""
+SITE_URL_STAGE=""
+SITE_URL_PROD=""
 
-data preparation from
+# DB
+DB_HOST_DEV=""
+DB_NAME_DEV=""
+DB_USER_DEV=""
+DB_PWD_DEV=""
 
-and inside function for every type
-use getArticleInfo
-use getNoarticleInfo
-specify types in constants
+DB_HOST_TEST=""
+DB_NAME_TEST=""
+DB_USER_TEST=""
+DB_PWD_TEST=""
 
-teaser getter
-module image getter
+DB_HOST_STAGE=""
+DB_NAME_STAGE=""
+DB_USER_STAGE=""
+DB_PWD_STAGE=""
 
-adjust config, logos, database connection
+DB_HOST_PROD=""
+DB_NAME_PROD=""
+DB_USER_PROD=""
+DB_PWD_PROD=""
 
+# SMTP – the client mailer
+SMTP_HOST_TEST=""
+SMTP_PORT_TEST=""
+SMTP_USER_TEST=""
+SMTP_PWD_TEST=""
 
-define module keys
+SMTP_HOST_PROD=""
+SMTP_PORT_PROD=""
+SMTP_USER_PROD=""
+SMTP_PWD_PROD=""
 
-style and create static pages
+# API
+API_KEY_1=""
+API_KEY_2=""
+API_KEY_3=""
+```
+
+Fill in the empty fields with your specific configuration details.
+
+## Creating New Pages
+
+### Static or Noarticle Pages
+
+1. Add the new page URL to the routes configuration.
+2. If you want to use the Noarticle type, you can adjust the `getNoarticleInfo` function in the `Frontend_Data` class.
+3. Add a function that loads the view to the respective controller. Here you can define all model functions and data necessary for your page. The name of the function should be the same as the URL specified in routes.
+4. Use the `load_view` function where you specify common items that load on every page.
+5. Create a new PHP file for your view in the `views` folder.
+
+### Detail Pages for Articles
+
+1. Edit the `detail` function in the Frontend Controller. This function is applied whenever you try to open a URL that is not defined in routes.
+2. Use `getArticleInfo` and define entity type-specific info within the switcher of those functions. You will find it in `Frontend_Data`.
+3. Define modules you want to use, create new ones for your articles as needed.
+
+## Common Functionality
+
+- The `getNoarticleInfo` and `getArticleInfo` functions by default retrieve teaser images and set the correct language.
+- Specify any new Article or Noarticle entity type in constants.
